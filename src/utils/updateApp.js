@@ -27,7 +27,6 @@ const updateSetting = () => {
     if(localStorage.getItem('appVersion') === '"0.3.9"') {
         settings.lyricsBackground = true;
     }
-
     localStorage.setItem('settings', JSON.stringify(settings));
 };
 
@@ -40,7 +39,7 @@ const updateData = () => {
 };
 
 const updatePlayer = () => {
-    let parsedData = JSON.stringify(localStorage.getItem('player'));
+    let parsedData = JSON.parse(localStorage.getItem('player'));
     let appVersion = localStorage.getItem('appVersion');
     if (appVersion === `"0.2.5"`) parsedData = {}; // 0.2.6版本重构了player
     const data = {

@@ -1,6 +1,6 @@
 import initLocalStorage from './initLocalStorage';
 import pkg from '../../package.json';
-import undateApp from '@/utils/undateApp';
+import updateApp from '@/utils/updateApp';
 
 // 如果没有更新过，用初始的配置
 if (localStorage.getItem('appVersion') === null) {
@@ -10,7 +10,7 @@ if (localStorage.getItem('appVersion') === null) {
 }
 
 // 否则，更新配置
-undateApp();
+updateApp();
 
 export default {
     showLyrics: false,
