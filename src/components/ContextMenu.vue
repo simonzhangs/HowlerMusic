@@ -1,67 +1,68 @@
 <template>
-    <div ref="contextMenu" class="context-menu">
-        <div
-            v-if="showMenu"
-            ref="menu"
-            class="menu"
-            tabindex="-1"
-            :style="{ top: top, left: left }"
-            @blur="closeMenu"
-            @click="closeMenu"
-        >
-        <slot></slot>
-        </div>
+  <!-- 右上角 点击/右键触发的菜单容器 子组件 -->
+  <!-- 用于 navbar / trackliist 组件 -->
+  <div ref="contextMenu" class="context-menu">
+    <div
+      v-if="showMenu"
+      ref="menu"
+      class="menu"
+      tabindex="-1"
+      :style="{ top: top, left: left }"
+      @blur="closeMenu"
+      @click="closeMenu"
+    >
+      <slot></slot>
     </div>
+  </div>
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
-    name: 'ContextMenu',
-    data() {
-        return {
-            showMenu: false,
-            top: '0px',
-            left: '0px',
-        };
+  name: "ContextMenu",
+  data() {
+    return {
+      showMenu: false,
+      top: "0px",
+      left: "0px",
+    };
+  },
+  computed: {
+    ...mapState(["player"]),
+  },
+  methods: {
+    setMenu(top, left) {
+      let heightOffset = this.player.enable ? 64 : 0;
+      let largestHeight =
+        window.innerHeight - this.$refs.menu.offsetHeight - heightOffset;
+      let largestwidth = window.innerWidth - this.$refs.menu.offsetWidth - 25;
+      if (top > largestHeight) top = largestHeight;
+      if (left > largestwidth) left = largestwidth;
+      this.top = top + "px";
+      this.left = left + "px";
     },
-    computed: {
-        ...mapState(['player']),
+    closeMenu() {
+      this.showMenu = false;
+      if (this.$parent.closeMenu !== undefined) {
+        this.$parent.closeMenu();
+      }
+      this.$store.commit("enableScrolling", true);
     },
-    methods: {
-        setMenu(top, left) {
-            let heightOffset = this.player.enable ? 64 : 0;
-            let largestHeight = 
-                window.innerHeight - this.$refs.menu.offsetHeight - heightOffset;
-            let largestwidth = window.innerWidth - this.$refs.menu.offsetWidth - 25;
-            if(top > largestHeight) top = largestHeight;
-            if(left > largestwidth) left = largestwidth;
-            this.top = top + 'px';
-            this.left = left + 'px';
-        },
-        closeMenu() {
-            this.showMenu = false;
-            if (this.$parent.closeMenu !== undefined) {
-                this.$parent.closeMenu();
-            }
-            this.$store.commit('enableScrolling',true);
-        },
-        openMenu(e) {
-            this.showMenu = true;
-            this.$nextTick(
-                function() {
-                    this.$refs.menu.focus();
-                    this.setMenu(e.y,e.x);
-                }.bind(this)
-            );
-            e.preventDefault();
-            this.$store.commit('enableScrolling',false);
-        },
+    openMenu(e) {
+      this.showMenu = true;
+      this.$nextTick(
+        function () {
+          this.$refs.menu.focus();
+          this.setMenu(e.y, e.x);
+        }.bind(this)
+      );
+      e.preventDefault();
+      this.$store.commit("enableScrolling", false);
     },
+  },
 };
 </script>
-
 
 <style lang="scss" scoped>
 //暂时还没敲
@@ -91,7 +92,7 @@ export default {
   }
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   .menu {
     background: rgba(36, 36, 36, 0.78);
     backdrop-filter: blur(16px) contrast(120%);

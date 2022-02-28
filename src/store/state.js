@@ -15,6 +15,7 @@ updateApp();
 export default {
     showLyrics: false,
     enableScrolling: true,
+    // 个人音乐库
     liked: {
         songs: [],
         songsWithDetails: [], // 音乐库 第一栏目 只有前12首
@@ -24,15 +25,18 @@ export default {
         mvs: [],
         cloudDisk: [],
     },
+    // 点击或右键 弹出菜单栏
     contextMenu: {
         clickObjectID: 0,
         showMenu: false,
     },
+    // 文本提示信息
     toast: {
         show: false,
         text: '',
         timer: null,
     },
+    // 新建歌单或添加到歌单 状态信息
     modals: {
         addTrackToPlaylistModal: {
             show: false,

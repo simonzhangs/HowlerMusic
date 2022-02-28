@@ -1,4 +1,15 @@
-import request from '@/utils/request';
+/**
+ * 用户登录鉴权 api
+ * 手机登录 loginWithPhone
+ * 邮箱登录 loginWithEmail
+ * 二维码key生成接口 loginQrCodeKey
+ * 二维码生成接口 loginQrCodeCreate
+ * 二维码检测扫码状态接口 loginQrCodeCheck
+ * 刷新登录 refreshCookie
+ * 退出登录 logout
+ */
+
+import request from "@/utils/request";
 
 // 网易云api ： https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e6%89%8b%e6%9c%ba%e7%99%bb%e5%bd%95
 /**
@@ -14,11 +25,11 @@ import request from '@/utils/request';
  * @param {string=} params.md5_password
  */
 export function loginWithPhone(params) {
-    return request({
-        url: '/login/cellphone',
-        method: 'post',
-        params,
-    });
+  return request({
+    url: "/login/cellphone",
+    method: "post",
+    params,
+  });
 }
 
 /**
@@ -32,21 +43,21 @@ export function loginWithPhone(params) {
  * @param {string=} params.md5_password
  */
 export function loginWithEmail(params) {
-    return request({
-        url: '/login',
-        method: 'post',
-        params,
-    });
+  return request({
+    url: "/login",
+    method: "post",
+    params,
+  });
 }
 
 /**
  * 二维码key生成接口
  */
 export function loginQrCodeKey() {
-    return request({
-        url: '/login/qr/key',
-        method: 'get',
-    });
+  return request({
+    url: "/login/qr/key",
+    method: "get",
+  });
 }
 
 /**
@@ -58,14 +69,14 @@ export function loginQrCodeKey() {
  * @param {string=} params.qrimg 传入后会额外返回二维码图片base64编码
  */
 export function loginQrCodeCreate(params) {
-    return request({
-        url: 'login/qr/create',
-        method: 'get',
-        params: {
-            ...params,
-            timestamp: new Date().getTime(),
-        },
-    });
+  return request({
+    url: "login/qr/create",
+    method: "get",
+    params: {
+      ...params,
+      timestamp: new Date().getTime(),
+    },
+  });
 }
 
 /**
@@ -74,14 +85,14 @@ export function loginQrCodeCreate(params) {
  * @param {string} key
  */
 export function loginQrCodeCheck(key) {
-    return request({
-        url: '/login/qr/check',
-        method: 'get',
-        params: {
-            key,
-            timestamp: new Date().getTime(),
-        },
-    });
+  return request({
+    url: "/login/qr/check",
+    method: "get",
+    params: {
+      key,
+      timestamp: new Date().getTime(),
+    },
+  });
 }
 
 /**
@@ -90,10 +101,10 @@ export function loginQrCodeCheck(key) {
  * - 调用例子 : /login/refresh
  */
 export function refreshCookie() {
-    return request({
-        url: 'login/refresh',
-        method: 'post',
-    });
+  return request({
+    url: "login/refresh",
+    method: "post",
+  });
 }
 
 /**
@@ -101,8 +112,8 @@ export function refreshCookie() {
  * 说明 : 调用此接口 , 可退出登录
  */
 export function logout() {
-    return request({
-        url: '/logout',
-        method: 'post',
-    });
+  return request({
+    url: "/logout",
+    method: "post",
+  });
 }

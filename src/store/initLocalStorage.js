@@ -1,3 +1,6 @@
+// 如果没有更新过，用初始的配置
+// 用于初始化 state 状态
+
 import { playlistCategories } from "@/utils/staticData";
 import shortcuts from "@/utils/shortcuts";
 

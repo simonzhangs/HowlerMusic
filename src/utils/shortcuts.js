@@ -1,7 +1,7 @@
 // default shortcuts
 // for more info, check https://www.electronjs.org/docs/api/accelerator
 
-// 快捷键设置 (推测是桌面端的，未断定)
+// 桌面端--快捷键设置
 export default [
   {
     id: "play",

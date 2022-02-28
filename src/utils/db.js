@@ -1,5 +1,6 @@
 // import axios from "axios";
 import Dexie from "dexie";
+import { result } from "lodash";
 // import store from "@/store";
 
 const db = new Dexie("yesplaymusic");
@@ -72,4 +73,19 @@ export function getLyricFromCache(id) {
         if (!result) return undefined;
         return result.lyrics;
     });
+}
+
+export function cacheAlbum(id, album) {
+  db.album.put({
+    id: Number(id),
+    album,
+    updateTime: new Date().getTime(),
+  });
+}
+
+export function getAlbumFromCache(id) {
+  return db.album.get(Number(id)).then(result => {
+    if (!result) return undefined;
+    return result.album;
+  })
 }

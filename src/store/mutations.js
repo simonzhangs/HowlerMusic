@@ -3,7 +3,7 @@ import cloneDeep from "lodash/cloneDeep";
 
 export default {
     // liked
-    undateLikedXXX(state,{ name, data }) {
+    updateLikedXXX(state,{ name, data }) {
         state.liked[name] = data;
         if (name === 'songs') {
             state.player.sendSelfToIpcMain();
@@ -23,6 +23,9 @@ export default {
         state.settings.outputDevice = deviceId;
     },
     updateSettings(state,{ key, value }) {
+        state.settings[key] = value;
+    },
+    updateData(state, { key, value }) {
         state.data[key] = value;
     },
     togglePlaylistCategory(state,name) {

@@ -1,4 +1,5 @@
 <template>
+  <!-- 利用 slot 新建歌单 或 添加到歌单 组件 -->
   <div v-show="show" class="shade" @click="clickOutside">
     <div class="modal" :style="modalStyles" @click.stop>
       <div class="header">
