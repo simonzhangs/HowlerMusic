@@ -1,5 +1,5 @@
 <template>
-  <!-- 首页 一行 播放封面组件 由子组件 cover 构成 -->
+  <!-- 一行播放封面组件 由子组件 cover 构成 -->
   <div class="cover-row" :style="rowStyles">
     <div
       v-for="item in items"

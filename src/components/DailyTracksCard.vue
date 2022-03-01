@@ -1,4 +1,5 @@
 <template>
+  <!-- 首页 每日推荐组件 -->
   <div class="daily-recommend-card" @click="goToDailyTracks">
     <img :src="coverUrl" />
     <div class="container">
@@ -97,7 +98,7 @@ img {
 }
 
 .container {
-  background: linear-gradient(to left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.28));
+  background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.28));
   height: 198px;
   width: 50%;
   display: flex;

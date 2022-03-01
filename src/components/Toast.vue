@@ -1,4 +1,5 @@
 <template>
+  <!-- 文本信息提示 组件 -->
   <transition name="fade">
     <div v-show="toast.show" class="toast">{{ toast.text }}</div>
   </transition>
@@ -33,8 +34,8 @@ export default {
   z-index: 1010;
 }
 
-[date-theme='dark'] {
-    .toast {
+[date-theme="dark"] {
+  .toast {
     background: rgba(46, 46, 46, 0.68);
     backdrop-filter: blur(16px) contrast(120%);
     border: 1px solid rgba(255, 255, 255, 0.08);

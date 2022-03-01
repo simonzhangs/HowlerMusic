@@ -1,6 +1,5 @@
 // import axios from "axios";
 import Dexie from "dexie";
-import { result } from "lodash";
 // import store from "@/store";
 
 const db = new Dexie("yesplaymusic");

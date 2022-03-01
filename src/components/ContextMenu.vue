@@ -1,6 +1,6 @@
 <template>
   <!-- 右上角 点击/右键触发的菜单容器 子组件 -->
-  <!-- 用于 navbar / trackliist 组件 -->
+  <!-- 用于 navbar / tracklist 组件 -->
   <div ref="contextMenu" class="context-menu">
     <div
       v-if="showMenu"

@@ -1,4 +1,5 @@
 <template>
+  <!-- 首页 fm 组件 -->
   <div class="fm" :style="{ background }" date-theme="dark">
     <img :src="nextTrackCover" style="display: none" />
     <img
@@ -149,7 +150,7 @@ export default {
     word-break: break-all;
   }
   .artist {
-      opacity: 0.68;
+    opacity: 0.68;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -157,34 +158,34 @@ export default {
     word-break: break-all;
   }
   .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-left: -0.4rem;
+    .buttons {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-left: -0.4rem;
-      .buttons {
-          display: flex;
-      }
+    }
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .svg-icon#thumbs-down {
+      width: 22px;
+      height: 22px;
+    }
+    .card-name {
+      font-size: 1rem;
+      opacity: 0.18;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      user-select: none;
       .svg-icon {
-          width: 24px;
-          height: 24px;
+        width: 18px;
+        height: 18%;
+        margin-right: 6px;
       }
-      .svg-icon#thumbs-down {
-          width: 22px;
-          height: 22px;
-      }
-      .card-name {
-          font-size: 1rem;
-          opacity: 0.18;
-          display: flex;
-          align-items: center;
-          font-weight: 600;
-          user-select: none;
-          .svg-icon {
-              width: 18px;
-              height: 18%;
-              margin-right: 6px;
-          }
-      }
+    }
   }
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+  <!-- 图标子组件 E  用于 coverrow 组件中-->
   <svg-icon icon-class="explicit" :style="svgStyle"></svg-icon>
 </template>
 

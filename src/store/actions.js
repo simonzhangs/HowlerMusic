@@ -173,9 +173,9 @@ export default {
     ]).then((result) => {
       const data = {};
       const dataType = { 0: 'allData', 1: 'weekData'};
-      if (result[0] && result[[1]]) {
+      if (result[0] && result[1]) {
           for (let i = 0; i < result.length; i++) {
-              const songData = result[i].[dataType[i]].map(item => {
+              const songData = result[i][dataType[i]].map(item => {
                   const song = item.song;
                   song.playCount = item.playCount;
                   return song;

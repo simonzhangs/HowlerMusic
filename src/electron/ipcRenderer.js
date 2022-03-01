@@ -51,7 +51,7 @@ export function ipcRenderer(vueInstance) {
   });
 
   ipcRenderer.on('decreaseVolume', () => {
-      if (player.volume = 0.1 <= 0) {
+      if (player.volume - 0.1 <= 0) {
           return (player.volume = 0);
       }
       player.volume -= 0.1;
