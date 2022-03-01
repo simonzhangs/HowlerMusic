@@ -1,3 +1,20 @@
+/**
+ * ****************** 用户信息 api ***************
+ * 获取云盘数据  cloudDisk
+ * 获取云盘歌曲详情（需要登录） cloudDiskTrackDetail
+ * 删除云盘歌曲（需要登录） cloudDiskTrackDelete
+ * 每日签到 dailySignin
+ * 获取收藏的专辑（需要登录） likedAlbums
+ * 获取收藏的歌手（需要登录） ikedArtists
+ * 获取收藏的MV（需要登录） likedMVs
+ * 获取用户歌单 userPlaylist
+ * 获取账号详情 userAccount
+ * 获取用户详情 userDetail
+ * 获取用户播放记录 userPlayHistory
+ * 喜欢音乐列表（需要登录） userLikedSongsIDs
+ * 上传歌曲到云盘（需要登录） uploadSong
+ */
+
 import request from "@/utils/request";
 
 /**
@@ -19,6 +36,35 @@ export function cloudDisk(params = {}) {
 }
 
 /**
+ * 获取云盘歌曲详情（需要登录）
+ */
+ export function cloudDiskTrackDetail(id) {
+  return request({
+    url: '/user/cloud/detail',
+    method: 'get',
+    params: {
+      timestamp: new Date().getTime(),
+      id,
+    },
+  });
+}
+
+/**
+ * 删除云盘歌曲（需要登录）
+ * @param {Array} id
+ */
+ export function cloudDiskTrackDelete(id) {
+  return request({
+    url: '/user/cloud/del',
+    method: 'get',
+    params: {
+      timestamp: new Date().getTime(),
+      id,
+    },
+  });
+}
+
+/**
  * 每日签到
  * 说明 : 调用此接口可签到获取积分
  * -  type: 签到类型 , 默认 0, 其中 0 为安卓端签到 ,1 为 web/PC 签到
@@ -30,6 +76,56 @@ export function dailySignin(type = 0) {
     method: "post",
     params: {
       type,
+      timestamp: new Date().getTime(),
+    },
+  });
+}
+
+/**
+ * 获取收藏的专辑（需要登录）
+ * 说明 : 调用此接口可获取到用户收藏的专辑
+ * - limit : 返回数量 , 默认为 25
+ * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*25, 其中 25 为 limit 的值 , 默认为 0
+ * @param {Object} params
+ * @param {number} params.limit
+ * @param {number=} params.offset
+ */
+ export function likedAlbums(params) {
+  return request({
+    url: "/album/sublist",
+    method: "get",
+    params: {
+      limit: params.limit,
+      timestamp: new Date().getTime(),
+    },
+  });
+}
+
+/**
+ * 获取收藏的歌手（需要登录）
+ * 说明 : 调用此接口可获取到用户收藏的歌手
+ */
+export function likedArtists(params) {
+  return request({
+    url: "/artist/sublist",
+    method: "get",
+    params: {
+      limit: params.limit,
+      timestamp: new Date().getTime(),
+    },
+  });
+}
+
+/**
+ * 获取收藏的MV（需要登录）
+ * 说明 : 调用此接口可获取到用户收藏的MV
+ */
+export function likedMVs(params) {
+  return request({
+    url: "/mv/sublist",
+    method: "get",
+    params: {
+      limit: params.limit,
       timestamp: new Date().getTime(),
     },
   });
@@ -63,6 +159,23 @@ export function userAccount() {
     url: "/user/account",
     method: "get",
     params: {
+      timestamp: new Date().getTime(),
+    },
+  });
+}
+
+/**
+ * 获取用户详情
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户详情
+ * - uid : 用户 id
+ * @param {number} uid
+ */
+ export function userDetail(uid) {
+  return request({
+    url: '/user/detail',
+    method: 'get',
+    params: {
+      uid,
       timestamp: new Date().getTime(),
     },
   });
@@ -103,51 +216,23 @@ export function userLikedSongsIDs(uid) {
 }
 
 /**
- * 获取收藏的专辑（需要登录）
- * 说明 : 调用此接口可获取到用户收藏的专辑
- * - limit : 返回数量 , 默认为 25
- * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*25, 其中 25 为 limit 的值 , 默认为 0
- * @param {Object} params
- * @param {number} params.limit
- * @param {number=} params.offset
+ * 上传歌曲到云盘（需要登录）
  */
-export function likedAlbums(params) {
+ export function uploadSong(file) {
+  let formData = new FormData();
+  formData.append('songFile', file);
   return request({
-    url: "/album/sublist",
-    method: "get",
+    url: '/cloud',
+    method: 'post',
     params: {
-      limit: params.limit,
       timestamp: new Date().getTime(),
     },
-  });
-}
-
-/**
- * 获取收藏的歌手（需要登录）
- * 说明 : 调用此接口可获取到用户收藏的歌手
- */
-export function likedArtists(params) {
-  return request({
-    url: "/artist/sublist",
-    method: "get",
-    params: {
-      limit: params.limit,
-      timestamp: new Date().getTime(),
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  });
-}
-
-/**
- * 获取收藏的MV（需要登录）
- * 说明 : 调用此接口可获取到用户收藏的MV
- */
-export function likedMVs(params) {
-  return request({
-    url: "/mv/sublist",
-    method: "get",
-    params: {
-      limit: params.limit,
-      timestamp: new Date().getTime(),
-    },
+    timeout: 200000,
+  }).catch(error => {
+    alert(`上传失败，Error: ${error}`);
   });
 }

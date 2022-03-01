@@ -1,3 +1,13 @@
+/**
+ * **************** 歌曲相关 api *****************
+ * 获取音乐 url getMP3
+ * 获取歌曲详情 getTrackDetail
+ * 获取歌词 getLyric
+ * 新歌速递 topSong
+ * 喜欢音乐 likeATrack
+ * 听歌打卡 scrobble
+ */
+
 import store from "@/store";
 import request from "@/utils/request";
 import { mapTrackPlayableStatus } from "@/utils/common";
