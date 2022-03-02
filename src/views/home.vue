@@ -16,7 +16,7 @@
     <!-- 首页 第二栏目 推荐歌单 -->
     <div class="index-row">
         <div class="title">
-            {{ $t('home.recommedPlaylist') }}
+            {{ $t('home.recommendPlaylist') }}
             <router-link to="/explore?category=推荐歌单">
                 {{ $t('home.seeMore') }}
             </router-link>
@@ -65,7 +65,7 @@
         </router-link>
       </div>
       <CoverRow 
-        :type="playlist"
+        type="playlist"
         :items="topList.items"
         sub-text="updateFrequency"
         :image-size="1024"
@@ -131,7 +131,7 @@ export default {
       recommendPlaylist({
         limit: 10,
       }).then(data => {
-        this.recommedPlaylist.items = data.result;
+        this.recommendPlaylist.items = data.result;
         NProgress.done();
         this.show = true;
       });

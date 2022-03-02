@@ -54,7 +54,7 @@ export default {
     type: { type: String, required: true },
     subText: { type: String, default: "null" },
     subTextFontSize: { type: String, default: "16px" },
-    showPlaycount: { type: Boolean, default: false },
+    showPlayCount: { type: Boolean, default: false },
     columnNumber: { type: Number, default: 5 },
     gap: { type: String, default: "44px 24px" },
     playButtonSize: { type: Number, default: 22 },

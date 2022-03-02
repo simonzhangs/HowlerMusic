@@ -8,9 +8,9 @@
       @scroll="handleScroll"
     >
       <keep-alive>
-        <router-view v-if="$router.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
-      <router-view v-if="!$router.meta.keepAlive"></router-view>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </main>
     <transition name="slide-up">
       <Player v-if="enablePlayer" v-show="showPlayer" ref="player" />

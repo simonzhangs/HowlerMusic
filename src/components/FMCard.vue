@@ -83,7 +83,7 @@ export default {
         }
       });
     },
-    geToAlbum() {
+    goToAlbum() {
       if (this.track.album.id === 0) return;
       this.$router.push({ path: "/album/" + this.track.album.id });
     },

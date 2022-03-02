@@ -14,7 +14,7 @@
           :style="thumbStyle"
           @mouseenter="handleMouseenter"
           @mouseleave="handleMouseleave"
-          @mousedown="handleMouseDragStart"
+          @mousedown="handleDragStart"
           @click.stop
         >
           <div></div>

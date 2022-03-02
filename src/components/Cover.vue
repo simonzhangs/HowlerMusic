@@ -4,7 +4,7 @@
     class="cover"
     :class="{ 'cover-hover': coverHover }"
     @mouseover="focus = true"
-    @mouseleave="focus = flase"
+    @mouseleave="focus = false"
     @click="clickCoverToPlay ? play() : goTo()"
   >
     <div class="cover-container">

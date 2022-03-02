@@ -1,6 +1,6 @@
-// import axios from "axios";
+import axios from "axios";
 import Dexie from "dexie";
-// import store from "@/store";
+import store from "@/store";
 
 const db = new Dexie("yesplaymusic");
 
@@ -28,7 +28,27 @@ db.version(1).stores({
   trackSources: "&id",
 });
 
-// let tracksCacheBytes = 0;
+let tracksCacheBytes = 0;
+
+async function deleteExcessCache() {
+  if (
+    store.state.settings.cacheLimit === false ||
+    tracksCacheBytes < store.state.settings.cacheLimit * Math.pow(1024, 2)
+  ) {
+    return;
+  }
+  try {
+    const delCache = await db.trackSources.orderBy("createTime").first();
+    await db.trackSources.delete(delCache.id);
+    tracksCacheBytes -= delCache.source.byteLength;
+    console.debug(
+      `[debug][db.js] deleteExcessCacheSucces, track: ${delCache.name}, 
+      size: ${delCache.source.byteLength}, cacheSize:${tracksCacheBytes}`
+    );
+  } catch (error) {
+    console.debug("[debug][db.js] deleteExcessCacheFailed", error);
+  }
+}
 
 export function cacheTrackDetail(track, privileges) {
   db.trackDetail.put({
@@ -60,18 +80,18 @@ export function getTrackDetailFromCache(ids) {
 }
 
 export function cacheLyric(id, lyrics) {
-    db.lyric.put({
-        id,
-        lyrics,
-        updateTime: new Date().getTime(),
-    });
+  db.lyric.put({
+    id,
+    lyrics,
+    updateTime: new Date().getTime(),
+  });
 }
 
 export function getLyricFromCache(id) {
-    return db.lyric.get(Number(id)).then(result => {
-        if (!result) return undefined;
-        return result.lyrics;
-    });
+  return db.lyric.get(Number(id)).then((result) => {
+    if (!result) return undefined;
+    return result.lyrics;
+  });
 }
 
 export function cacheAlbum(id, album) {
@@ -83,8 +103,52 @@ export function cacheAlbum(id, album) {
 }
 
 export function getAlbumFromCache(id) {
-  return db.album.get(Number(id)).then(result => {
+  return db.album.get(Number(id)).then((result) => {
     if (!result) return undefined;
     return result.album;
-  })
+  });
+}
+
+export function cacheTrackSource(trackInfo, url, bitRate, from = "netease") {
+  if (!process.env.IS_ELECTRON) return;
+  const name = trackInfo.name;
+  const artist =
+    (trackInfo.ar && trackInfo.ar[0]?.name) ||
+    (trackInfo.artists && trackInfo.artists[0]?.name) ||
+    "Unknown";
+  let cover = trackInfo.al.picUrl;
+  if (cover.slice(0, 5) !== "https") {
+    cover = "https" + cover.slice(4);
+  }
+  axios.get(`${cover}?param=512y512`);
+  axios.get(`${cover}?param=224y224`);
+  axios.get(`${cover}?param=1024y1024`);
+  return axios
+    .get(url, {
+      responseType: "arraybuffer",
+    })
+    .then((response) => {
+      db.trackSources.put({
+        id: trackInfo.id,
+        source: response.data,
+        bitRate,
+        from,
+        name,
+        artist,
+        createTime: new Date().getTime(),
+      });
+      console.debug(`[debug][db.js] cached track 👉 ${name} by ${artist}`);
+      tracksCacheBytes += response.data.byteLength;
+      deleteExcessCache();
+      return { trackID: trackInfo.id, source: response.data, bitRate };
+    });
+}
+
+export function getTrackSource(id) {
+  return db.trackSources.get(Number(id)).then((track) => {
+    if (!track) return null;
+    console.debug(
+      `[debug][db.js] get track from cache 👉 ${track.name} by ${track.artist}`
+    );
+  });
 }

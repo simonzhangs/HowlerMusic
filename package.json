@@ -19,7 +19,7 @@
     "howler": "^2.2.3",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.20",
-    "NeteaseCloudMusicApi": "^4.5.2",
+    "NeteaseCloudMusicApi": "^4.5.7",
     "node-vibrant": "^3.1.6",
     "nprogress": "^0.2.0",
     "register-service-worker": "^1.7.1",
@@ -37,10 +37,13 @@
     "@types/node": "^17.0.0",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-eslint": "~4.5.15",
+    "@vue/cli-plugin-pwa": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.15",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.3.0",
     "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
     "vue-template-compiler": "^2.6.11"
@@ -63,5 +66,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
+  }
 }

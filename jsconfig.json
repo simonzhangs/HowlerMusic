@@ -1,15 +1,18 @@
 {
-    //支持 @ 的别名解析
-    //参数配置含义解释需要补上
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        },
-        "target": "ES6",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true
+  //支持 @ 的别名解析
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules"]
+    "target": "ES6",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true
+  },
+  // exclude和include中的文件路径是相对于jsconfig.json的位置
+  //可以使用include属性（glob模式）显式设置项目中的文件。
+  //如果不存在include属性，则默认为包含目录和子目录中的所有文件。如果指定了include属性，则只包括这些文件。
+  "include": ["src/**/*"],
+  //exclude属性（glob模式）告诉语言服务哪些文件是什么文件，而不是源代码的一部分,这使性能保持在较高水平。
+  "exclude": ["node_modules"]
 }
