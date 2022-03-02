@@ -1,4 +1,5 @@
 <template>
+  <!-- 按钮 + slot 触发内容 组件 -->
   <button :style="buttonStyle" :class="color">
     <svg-icon
       v-if="iconClass !== null"
