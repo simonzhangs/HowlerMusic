@@ -157,8 +157,8 @@
                 :title="$t('player.mute')"
                 @click.native="player.mute"
               >
-                <svg-icon v-show="volumn > 0.5" icon-class="volume" />
-                <svg-icon v-show="volumn === 0" icon-class="volume-mute" />
+                <svg-icon v-show="volume > 0.5" icon-class="volume" />
+                <svg-icon v-show="volume === 0" icon-class="volume-mute" />
                 <svg-icon
                   v-show="volume <= 0.5 && volume !== 0"
                   icon-class="volume-half"

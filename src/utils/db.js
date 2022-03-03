@@ -61,7 +61,7 @@ export function cacheTrackDetail(track, privileges) {
 
 export function getTrackDetailFromCache(ids) {
   return db.trackDetail
-    .filtet((track) => {
+    .filter((track) => {
       return ids.includes(String(track.id));
     })
     .toArray()

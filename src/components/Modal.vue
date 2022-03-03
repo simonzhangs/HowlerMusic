@@ -18,32 +18,31 @@
 
 <script>
 export default {
-  name: "Modal",
+  name: 'Modal',
   props: {
     show: Boolean,
     close: Function,
-    title: { type: String, default: "Title" },
+    title: { type: String, default: 'Title' },
     showFooter: { type: Boolean, default: true },
-    width: { type: String, default: "50vw" },
-    clickOutSideHide: { type: Boolean, default: false },
+    width: { type: String, default: '50vw' },
+    clickOutsideHide: { type: Boolean, default: false },
   },
   computed: {
     modalStyles() {
-        return {
-            width: this.width,
-        };
+      return {
+        width: this.width,
+      };
     },
   },
   methods: {
-      clickOutSide() {
-          if (this.clickOutSideHide) {
-              this.close();
-          }
-      },
+    clickOutside() {
+      if (this.clickOutsideHide) {
+        this.close();
+      }
+    },
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .shade {

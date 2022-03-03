@@ -1,5 +1,5 @@
 <template>
-    <!-- fm子组件 歌曲歌手展示以及路由 -->
+    <!-- 歌曲歌手展示以及路由 -->
     <span class="artist-in-line">
         {{ computedPrefix }}
         <span v-for="(ar, index) in filteredArtists" :key="index">

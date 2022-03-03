@@ -170,7 +170,7 @@ export default {
       this.$router.push({ name: 'settings' });
     },
     toGithub() {
-      window.open('https://github.com/qier222/YesPlayMusic');
+      window.open('https://github.com/simonzhangs/ZBoQiQI-Music');
     },
     toLogin() {
       if (process.env.IS_ELECTRON === true) {
