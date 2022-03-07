@@ -35,6 +35,15 @@ const routes = [
     component: () => import('@/views/playlist.vue'),
   },
   {
+    path: '/explore',
+    name: 'explore',
+    component: () => import('@/views/explore.vue'),
+    meta: {
+      keepAlive: true,
+      savePosition: true,
+    },
+  },
+  {
     path: '/library',
     name: 'library',
     component: () => import('@/views/library.vue'),
