@@ -61,6 +61,15 @@ const routes = [
       requireLogin: true,
     },
   },
+  {
+    path: '/artist/:id',
+    name: 'artist',
+    component: () => import('@/views/artist.vue'),
+    meta: {
+      keepAlive: true,
+      savePosition: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
