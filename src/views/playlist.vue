@@ -156,7 +156,7 @@
           <svg-icon icon-class="search" />
           <div class="input" :style="{ width: searchInputWidth }">
             <input
-              v-if="displaySearchInplaylist"
+              v-if="displaySearchInPlaylist"
               v-model.trim="inputSearchKeyWords"
               v-focus
               :placeholder="inputFocus ? '' : $t('playlist.search')"

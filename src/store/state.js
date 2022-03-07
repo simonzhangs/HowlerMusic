@@ -24,6 +24,7 @@ export default {
         artists: [],
         mvs: [],
         cloudDisk: [],
+        playHistory: {}, //自己加的 library 为了不报错
     },
     // 点击或右键 弹出菜单栏
     contextMenu: {

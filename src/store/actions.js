@@ -121,7 +121,7 @@ export default {
       // TODO:搜索ID登录的用户
     }
   },
-  fetchLikedAlbum: ({ commit }) => {
+  fetchLikedAlbums: ({ commit }) => {
     if (!isAccountLoggedIn()) return;
     return likedAlbums({ limit: 2000 }).then((result) => {
       if (result.data) {
