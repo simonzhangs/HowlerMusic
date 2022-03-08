@@ -70,6 +70,16 @@ const routes = [
       savePosition: true,
     },
   },
+  {
+    path: '/mv/:id',
+    name: 'mv',
+    component: () => import('@/views/mv.vue'),
+  },
+  {
+    path: '/album/:id',
+    name: 'album',
+    component: () => import('@/views/album.vue')
+  }
 ];
 
 const router = new VueRouter({

@@ -87,6 +87,9 @@ export default {
     noticeElectron: `你的密码会在本地进行 MD5 加密后再传输到网易云 API。<br />
       YesPlayMusic 不会传输你的账号数据到任何非网易云音乐官方的服务器。<br />`,
   },
+  mv: {
+    moreVideo: '更多视频',
+  },
   next: {
     nowPlaying: "正在播放",
     nextUp: "即将播放",

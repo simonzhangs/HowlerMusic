@@ -134,7 +134,7 @@
       <div v-show="currentTab === 'albums'">
         <CoverRow
           :items="liked.albums"
-          type="albums"
+          type="album"
           sub-text="artist"
           :show-play-button="true"
         />
