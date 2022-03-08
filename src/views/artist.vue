@@ -222,7 +222,15 @@ import ContextMenu from '@/components/ContextMenu.vue';
 
 export default {
   name: 'Artist',
-  components: { ButtonTwoTone, Cover, CoverRow, TrackList, MvRow, Modal, ContextMenu },
+  components: {
+    ButtonTwoTone,
+    Cover,
+    CoverRow,
+    TrackList,
+    MvRow,
+    Modal,
+    ContextMenu,
+  },
   beforeRouteUpdate(to, from, next) {
     this.artist.img1v1Url =
       'https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg';
@@ -308,8 +316,8 @@ export default {
         this.similarArtists = data.artists;
       });
     },
-    goToMv(id){
-        this.$router.push({ path: '/mv/' + id });
+    goToMv(id) {
+      this.$router.push({ path: '/mv/' + id });
     },
     playPopularSongs(trackID = 'first') {
       let trackIDs = this.popularTracks.map(t => t.id);
@@ -385,8 +393,165 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 16px -8px;
   }
   .name {
-      font-size: 56px;
-      font-weight: 700;
+    font-size: 56px;
+    font-weight: 700;
   }
+
+  .artist {
+    font-size: 18px;
+    opacity: 0.88;
+    margin-top: 24px;
+  }
+  .statistics {
+    font-size: 14px;
+    opacity: 0.68;
+    margin-top: 2px;
+  }
+  .description {
+    user-select: none;
+    font-size: 14px;
+    opacity: 0.68;
+    margin-top: 24px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    cursor: pointer;
+    white-space: pre-line;
+    &:hover {
+      transition: opacity 0.3s;
+      opacity: 0.88;
+    }
+  }
+
+  .buttons {
+    margin-top: 26px;
+    display: flex;
+    .shuffle {
+      padding: 8px 11px;
+      .svg-icon {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 22px;
+  opacity: 0.88;
+  color: var(--color-text);
+  padding-top: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  a {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.68;
+  }
+}
+
+.latest-release {
+  color: var(--color-text);
+  .release {
+    display: flex;
+  }
+  .container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    border-radius: 8px;
+  }
+  img {
+    height: 96px;
+    border-radius: 8px;
+  }
+  .info {
+    margin-left: 24px;
+    .name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .date {
+      font-size: 14px;
+      opacity: 0.78;
+    }
+    .type {
+      margin-top: 2px;
+      font-size: 12px;
+      opacity: 0.68;
+    }
+  }
+}
+
+.popular-tracks {
+  .show-more {
+    display: flex;
+
+    button {
+      padding: 4px 8px;
+      margin-top: 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      opacity: 0.78;
+      color: var(--color-secondary);
+      font-weight: 600;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.similar-artists {
+  .section-title {
+    margin-bottom: 24px;
+  }
+}
+
+.latest-mv {
+  .cover {
+    position: relative;
+    transition: transform 0.3s;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  img {
+    border-radius: 0.75em;
+    height: 128px;
+    object-fit: cover;
+    user-select: none;
+  }
+  .shadow {
+    position: absolute;
+    top: 6px;
+    height: 100%;
+    width: 100%;
+    filter: blur(16px) opacity(0.4);
+    transform: scale(0.9, 0.9);
+    z-index: -1;
+    background-size: cover;
+    border-radius: 0.75em;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+}
+
+.description-fulltext {
+  font-size: 16px;
+  margin-top: 24px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: pre-line;
 }
 </style>
