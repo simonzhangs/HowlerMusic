@@ -62,7 +62,7 @@ export default {
       return this.track.artists || this.track.ar || [];
     },
     nextTrackCover() {
-      return `${this.player._personalFMNextTrack?.album?.pickUrl.replace(
+      return `${this.player._personalFMNextTrack?.album?.picUrl.replace(
         "http://",
         "https://"
       )}?param=512y512`;
@@ -165,6 +165,9 @@ export default {
     .buttons {
       display: flex;
     }
+    .button-icon {
+      margin: 0 8px 0 0;
+    }
     .svg-icon {
       width: 24px;
       height: 24px;
@@ -182,7 +185,7 @@ export default {
       user-select: none;
       .svg-icon {
         width: 18px;
-        height: 18%;
+        height: 18px;
         margin-right: 6px;
       }
     }

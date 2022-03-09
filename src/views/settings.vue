@@ -162,7 +162,7 @@
       </div>
 
       <h3>第三方</h3>
-      <div class="item">
+      <!-- <div class="item">
         <div class="left">
           <div class="title">
             {{
@@ -178,7 +178,7 @@
           </button>
           <button v-else @click="lastfmConnect()"> 授权连接 </button>
         </div>
-      </div>
+      </div> -->
 
       <h3>其他</h3>
       <!-- 首页是否展示apple music 歌单 -->

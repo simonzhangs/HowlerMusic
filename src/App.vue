@@ -99,7 +99,7 @@ export default {
       if (isAccountLoggedIn()) {
         this.$store.dispatch('fetchLikedAlbums');
         this.$store.dispatch('fetchLikedArtists');
-        this.$store.dispatch('fetchLikedMVs');
+        this.$store.dispatch('fetchLikedMvs');
         this.$store.dispatch('fetchCloudDisk');
       }
     },

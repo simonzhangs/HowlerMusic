@@ -9,7 +9,7 @@
       <CoverRow
         :type="'playlist'"
         :items="byAppleMusic"
-        subtext="appleMusic"
+        sub-text="appleMusic"
         :image-size="1024"
       />
     </div>
@@ -24,7 +24,7 @@
         <CoverRow
             :type="'playlist'"
             :items="recommendPlaylist.items"
-            subtext="copywriter"
+            sub-text="copywriter"
         />
     </div>
     <!-- 首页 第三个栏目 for you -->
