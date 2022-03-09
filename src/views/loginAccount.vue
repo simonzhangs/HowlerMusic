@@ -225,7 +225,7 @@ export default {
         this.updateData({ key: 'loginMode', value: 'account'});
         this.$store.dispatch('fetchUserProfile').then(() => {
           this.$store.dispatch('fetchLikedPlaylist').then(() => {
-            this.$router.push({ path: '/libarary/' });
+            this.$router.push({ path: '/library' });
           });
         });
       } else {

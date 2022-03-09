@@ -181,3 +181,20 @@ export function splitAlbumTitle(title) {
     subtitle: '',
   };
 }
+
+export function bytesToSize(bytes) {
+  let marker = 1024; // Change to 1000 if required
+  let decimal = 2; // Change as required
+  let kiloBytes = marker;
+  let megaBytes = marker * marker;
+  let gigaBytes = marker * marker * marker;
+
+  let lang = store.state.settings.lang;
+
+  if (bytes < kiloBytes) return bytes + (lang === 'en' ? ' Bytes' : '字节');
+  else if (bytes < megaBytes)
+    return (bytes / kiloBytes).toFixed(decimal) + ' KB';
+  else if (bytes < gigaBytes)
+    return (bytes / megaBytes).toFixed(decimal) + ' MB';
+  else return (bytes / gigaBytes).toFixed(decimal) + ' GB';
+}
