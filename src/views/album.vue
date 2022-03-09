@@ -103,7 +103,51 @@
         © {{ album.company }}
       </div>
     </div>
-    
+
+    <div v-if="filteredMoreAlbums.length !== 0" class="more-by">
+      <div class="section-title">
+        More by
+        <router-link :to="`/artist/${album.artist.id}`">
+          {{ album.artist.name }}
+        </router-link>
+      </div>
+      <div>
+        <CoverRow
+          type="album"
+          :items="filteredMoreAlbums"
+          sub-text="albumType+releaseYear"
+        />
+      </div>
+    </div>
+
+    <Modal
+      :show="showFullDescription"
+      :close="toggleFullDescription"
+      :show-footer="false"
+      :click-outside-hide="true"
+      :title="$t('album.albumDesc')"
+    >
+      <p class="description-fulltext">
+        {{ album.description }}
+      </p>
+    </Modal>
+
+    <ContextMenu ref="albumMenu">
+      <div class="item" @click="likeAlbum(true)">
+        {{
+          dynamicDetail.isSub
+            ? $t('contextMenu.removeFromLibrary')
+            : $t('contextMenu.saveToLibrary')
+        }}
+      </div>
+      <div class="item">{{ $t('contextMenu.addToPlaylist') }}</div>
+      <div class="item" @click="copyUrl(album.id)">{{
+        $t('contextMenu.copyUrl')
+      }}</div>
+      <div class="item" @click="openInBrowser(album.id)">{{
+        $t('contextMenu.openInBrowser')
+      }}</div>
+    </ContextMenu>
   </div>
 </template>
 
@@ -113,19 +157,30 @@ import { splitSoundtrackAlbumTitle, splitAlbumTitle } from '@/utils/common';
 import { getArtistAlbum } from '@/api/artist';
 import { getTrackDetail } from '@/api/track';
 import Cover from '@/components/Cover.vue';
+import CoverRow from '@/components/CoverRow.vue';
 
 import NProgress from 'nprogress';
 import locale from '@/locale';
 import ExplicitSymbol from '@/components/ExplicitSymbol.vue';
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import ButtonTwoTone from '@/components/ButtonTwoTone.vue';
 import { isAccountLoggedIn } from '@/utils/auth';
 import { groupBy } from 'lodash';
 import TrackList from '@/components/TrackList.vue';
+import Modal from '@/components/Modal.vue';
+import ContextMenu from '@/components/ContextMenu.vue';
 
 export default {
   name: 'Album',
-  components: { Cover, ExplicitSymbol, ButtonTwoTone, TrackList },
+  components: {
+    Cover,
+    CoverRow,
+    ExplicitSymbol,
+    ButtonTwoTone,
+    TrackList,
+    Modal,
+    ContextMenu,
+  },
   beforeRouteUpdate(to, from, next) {
     this.show = false;
     this.loadData(to.params.id);
@@ -159,11 +214,32 @@ export default {
     tracksByDisc() {
       return groupBy(this.tracks, 'cd');
     },
+    filteredMoreAlbums() {
+      let moreAlbums = this.moreAlbums.filter(a => a.id !== this.album.id);
+      let realAlbums = moreAlbums.filter(a => a.type === '专辑');
+      let eps = moreAlbums.filter(
+        a => a.type === 'EP' || (a.type === 'EP/Single' && a.size > 1)
+      );
+      let restItems = moreAlbums.filter(
+        a =>
+          realAlbums.find(a1 => a1.id === a.id) === undefined &&
+          eps.find(a1 => a1.id === a.id) === undefined
+      );
+      if (realAlbums.length === 0) {
+        return [...realAlbums, ...eps, ...restItems].slice(0, 5);
+      } else {
+        return [...realAlbums, ...restItems].slice(0, 5);
+      }
+    },
   },
   created() {
     this.loadData(this.$route.params.id);
   },
   methods: {
+    ...mapActions(['showToast']),
+    playAlbumByID(id, trackID = 'first') {
+      this.$store.state.player.playAlbumByID(id, trackID);
+    },
     formatTitle() {
       let splitTitle = splitSoundtrackAlbumTitle(this.album.name);
       let splitTitle2 = splitAlbumTitle(splitTitle.title);
@@ -209,8 +285,22 @@ export default {
         this.$store.commit('enableScrolling', true);
       }
     },
-    oepnMenu(e) {
+    openMenu(e) {
       this.$refs.albumMenu.openMenu(e);
+    },
+    copyUrl(id) {
+      let showToast = this.showToast;
+      this.$copyText(`https://music.163.com/#/album?id=${id}`)
+        .then(function () {
+          showToast(locale.t('toast.copied'));
+        })
+        .catch(error => {
+          showToast(`${locale.t('toast.copyFailed')}${error}`);
+        });
+    },
+    openInBrowser(id) {
+      const url = `https://music.163.com/#/album?id=${id}`;
+      window.open(url);
     },
     likeAlbum(toast = false) {
       if (!isAccountLoggedIn()) {
@@ -238,3 +328,117 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.album-page {
+  margin-top: 32px;
+
+  .playlist-info {
+    display: flex;
+    width: 78vw;
+    margin-bottom: 72px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      margin-left: 56px;
+      color: var(--color-text);
+
+      .title {
+        font-size: 56px;
+        font-weight: 700;
+      }
+      .subtitle {
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .artist {
+        font-size: 18px;
+        opacity: 0.88;
+        margin-top: 24px;
+        a {
+          font-weight: 600;
+        }
+      }
+      .date-and-count {
+        font-size: 14px;
+        opacity: 0.68;
+        margin-top: 2px;
+        .explicit-symbol {
+          opacity: 0.28;
+          color: var(--color-text);
+          margin-right: 4px;
+          .svg-icon {
+            margin-bottom: -3px;
+          }
+        }
+      }
+      .description {
+        user-select: none;
+        font-size: 14px;
+        opacity: 0.68;
+        margin-top: 24px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        cursor: pointer;
+        white-space: pre-line;
+        &:hover {
+          transition: opacity 0.3s;
+          opacity: 0.88;
+        }
+      }
+      .buttons {
+        margin-top: 32px;
+        display: flex;
+        button {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+
+  .disc {
+    color: var(--color-text);
+  }
+
+  .extra-info {
+    margin-top: 36px;
+    margin-bottom: 36px;
+    font-size: 12px;
+    opacity: 0.48;
+    color: var(--color-text);
+    div {
+      margin-bottom: 4px;
+    }
+    .album-time {
+      opacity: 0.68;
+    }
+  }
+
+  .more-by {
+    border-top: 1px solid rgba(128, 128, 128, 0.18);
+    padding-top: 22px;
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 600;
+      opacity: 0.88;
+      color: var(--color-text);
+      margin-bottom: 20px;
+    }
+  }
+
+  .description-fulltext {
+    font-size: 16px;
+    margin-top: 24px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-line;
+  }
+}
+</style>
