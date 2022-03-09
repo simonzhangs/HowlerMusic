@@ -33,7 +33,7 @@ export default {
     });
   },
   likeATrack({ state, commit, dispatch }, id) {
-    if (isAccountLoggedIn()) {
+    if (!isAccountLoggedIn()) {
       dispatch("showToast", "此操作需要登录网易云账号");
       return;
     }

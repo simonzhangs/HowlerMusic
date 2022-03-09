@@ -40,7 +40,7 @@
               :class="['name', { 'has-list': hasList() }]"
               @click="hasList() && goToList()"
             >
-              {{ currentTrack.time }}
+              {{ currentTrack.name }}
             </div>
             <div class="artist">
               <span
@@ -54,7 +54,10 @@
             </div>
           </div>
           <div class="like-button">
-            <button-icon :title="$t('player.like')" @click="likeATrack">
+            <button-icon
+              :title="$t('player.like')"
+              @click.native="likeATrack(player.currentTrack.id)"
+            >
               <svg-icon
                 v-show="!player.isCurrentTrackLiked"
                 icon-class="heart"
@@ -66,128 +69,125 @@
               </svg-icon>
             </button-icon>
           </div>
-          <div class="blank"></div>
         </div>
-        <!-- 中间部分控件 -->
-        <div class="middle-control-buttons">
-          <div class="blank"></div>
-          <div class="container" @click.stop>
-            <button-icon
-              v-show="!player.isPersonalFM"
-              :title="$t('player.previous')"
-              @click.native="player.playPrevTrack"
-            >
-              <svg-icon icon-class="previous" />
-            </button-icon>
-            <button-icon
-              v-show="player.isPersonalFM"
-              title="不喜欢"
-              @click.native="player.moveToFMTrash"
-            >
-              <svg-icon icon-class="thumbs-down" />
-            </button-icon>
-            <button-icon
-              class="play"
-              :title="$t(player.playing ? 'player.pause' : 'player.play')"
-              @click.native="player.playOrPause"
-            >
-              <svg-icon icon-class="player.playing ? 'pause' : 'play'" />
-            </button-icon>
-            <button-icon :title="$t(player.next)" @click.native="playNextTrack">
-              <svg-icon icon-class="next" />
-            </button-icon>
-          </div>
-          <div class="blank"></div>
+        <div class="blank"></div>
+      </div>
+      <!-- 中间部分控件 -->
+      <div class="middle-control-buttons">
+        <div class="blank"></div>
+        <div class="container" @click.stop>
+          <button-icon
+            v-show="!player.isPersonalFM"
+            :title="$t('player.previous')"
+            @click.native="player.playPrevTrack"
+          >
+            <svg-icon icon-class="previous" />
+          </button-icon>
+          <button-icon
+            v-show="player.isPersonalFM"
+            title="不喜欢"
+            @click.native="player.moveToFMTrash"
+          >
+            <svg-icon icon-class="thumbs-down" />
+          </button-icon>
+          <button-icon
+            class="play"
+            :title="$t(player.playing ? 'player.pause' : 'player.play')"
+            @click.native="player.playOrPause"
+          >
+            <svg-icon :icon-class="player.playing ? 'pause' : 'play'" />
+          </button-icon>
+          <button-icon :title="$t(player.next)" @click.native="playNextTrack">
+            <svg-icon icon-class="next" />
+          </button-icon>
         </div>
-        <!-- 右侧部分控件 -->
-        <div class="right-control-buttons">
-          <div class="blank"></div>
-          <div class="container" @click.stop>
-            <button-icon
-              :title="$t(player.nextUp)"
-              :class="{
-                active: $route.name === 'next',
-                disabled: player.isPersonalFM,
-              }"
-              @click.native="goToNextTracksPage"
-            >
-              <svg-icon icon-class="list" />
-            </button-icon>
-            <button-icon
-              :class="{
-                active: player.repeatMode !== 'off',
-                disabled: player.isPersonalFM,
-              }"
-              :title="
-                player.repeatMode === 'one'
-                  ? $t('player.repeatTrack')
-                  : $t('player.repeat')
-              "
-              @click.native="player.switchRepeatMode"
-            >
+        <div class="blank"></div>
+      </div>
+      <!-- 右侧部分控件 -->
+      <div class="right-control-buttons">
+        <div class="blank"></div>
+        <div class="container" @click.stop>
+          <button-icon
+            :title="$t(player.nextUp)"
+            :class="{
+              active: $route.name === 'next',
+              disabled: player.isPersonalFM,
+            }"
+            @click.native="goToNextTracksPage"
+          >
+            <svg-icon icon-class="list" />
+          </button-icon>
+          <button-icon
+            :class="{
+              active: player.repeatMode !== 'off',
+              disabled: player.isPersonalFM,
+            }"
+            :title="
+              player.repeatMode === 'one'
+                ? $t('player.repeatTrack')
+                : $t('player.repeat')
+            "
+            @click.native="player.switchRepeatMode"
+          >
+            <svg-icon
+              v-show="player.repeatMode !== 'one'"
+              icon-class="repeat"
+            />
+            <svg-icon
+              v-show="player.repeatMode === 'one'"
+              icon-class="repeated-1"
+            />
+          </button-icon>
+          <button-icon
+            :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
+            :tilte="$t('player.shuffle')"
+            @click.native="player.switchShuffle"
+          >
+            <svg-icon icon-class="shuffle" />
+          </button-icon>
+          <button-icon
+            v-if="settings.enableReversedMode"
+            :class="{
+              active: player.reversed,
+              disabled: player.isPersonalFM,
+            }"
+            :title="$t('player.reversed')"
+            @click.native="player.switchReversed"
+          >
+            <svg-icon icon-class="sort-up" />
+          </button-icon>
+          <div class="volume-control">
+            <button-icon :title="$t('player.mute')" @click.native="player.mute">
+              <svg-icon v-show="volume > 0.5" icon-class="volume" />
+              <svg-icon v-show="volume === 0" icon-class="volume-mute" />
               <svg-icon
-                v-show="player.repeatMode !== 'one'"
-                icon-class="repeat"
-              />
-              <svg-icon
-                v-show="player.repeatMode === 'one'"
-                icon-class="repeated-1"
+                v-show="volume <= 0.5 && volume !== 0"
+                icon-class="volume-half"
               />
             </button-icon>
-            <button-icon
-              :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
-              :tilte="$t('player.shuffle')"
-              @click.native="player.switchShuffle"
-            >
-              <svg-icon icon-class="shuffle" />
-            </button-icon>
-            <button-icon
-              v-if="settings.enableReversedMode"
-              :class="{
-                active: player.reversed,
-                disabled: player.isPersonalFM,
-              }"
-              :title="$t('player.reversed')"
-              @click.native="player.switchReversed"
-            >
-              <svg-icon icon-class="sort-up" />
-            </button-icon>
-            <div class="volume-control">
-              <button-icon
-                :title="$t('player.mute')"
-                @click.native="player.mute"
+            <div class="volume-bar">
+              <vue-slider
+                v-model="volume"
+                :min="0"
+                :max="1"
+                :interval="0.01"
+                :drag-on-click="true"
+                :duration="0"
+                tooltip="none"
+                :dot-size="12"
               >
-                <svg-icon v-show="volume > 0.5" icon-class="volume" />
-                <svg-icon v-show="volume === 0" icon-class="volume-mute" />
-                <svg-icon
-                  v-show="volume <= 0.5 && volume !== 0"
-                  icon-class="volume-half"
-                />
-              </button-icon>
-              <div class="volume-bar">
-                <vue-slider
-                  v-model="volume"
-                  :min="0"
-                  :max="1"
-                  :interval="0.01"
-                  :drag-on-click="true"
-                  :duration="0"
-                  tooltip="none"
-                  :dot-size="12"
-                >
-                </vue-slider>
-              </div>
+              </vue-slider>
             </div>
-
-            <button-icon
-              class="lyrics-button"
-              title="歌词"
-              style="margin-left: 12px"
-              @click.native="toggleLyrics"
-            >
-              <svg-icon icon-class="arrow-up" />
-            </button-icon>
           </div>
+
+          <button-icon
+            class="lyrics-button"
+            title="歌词"
+            style="margin-left: 12px"
+            @click.native="toggleLyrics"
+          >
+            <svg-icon icon-class="arrow-up" />
+          </button-icon>
         </div>
       </div>
     </div>
@@ -195,23 +195,21 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
-import "@/assets/css/slider.css";
+import { mapState, mapMutations, mapActions } from 'vuex';
+import '@/assets/css/slider.css';
 
-import ButtonIcon from "@/components/ButtonIcon.vue";
-import VueSlider from "vue-slider-component";
-import { goToListSource, hasListSource } from "@/utils/playlist";
-import SvgIcon from "./SvgIcon.vue";
+import ButtonIcon from '@/components/ButtonIcon.vue';
+import VueSlider from 'vue-slider-component';
+import { goToListSource, hasListSource } from '@/utils/playlist';
 
 export default {
-  name: "Player",
+  name: 'Player',
   components: {
     ButtonIcon,
     VueSlider,
-    SvgIcon,
   },
   computed: {
-    ...mapState(["player", "settings", "data"]),
+    ...mapState(['player', 'settings', 'data']),
     currentTrack() {
       return this.player.currentTrack;
     },
@@ -227,14 +225,14 @@ export default {
       return this.player.playing;
     },
     audioSource() {
-      return this.player._howler?._src.includes("kuwo.cn")
-        ? "音源来自酷我音乐"
-        : "";
+      return this.player._howler?._src.includes('kuwo.cn')
+        ? '音源来自酷我音乐'
+        : '';
     },
   },
   methods: {
-    ...mapMutations(["toggleLyrics"]),
-    ...mapActions(["showToast", "likeATrack"]),
+    ...mapMutations(['toggleLyrics']),
+    ...mapActions(['showToast', 'likeATrack']),
     playNextTrack() {
       if (this.player.isPersonalFM) {
         this.player.playNextFMTrack();
@@ -244,14 +242,14 @@ export default {
     },
     goToNextTracksPage() {
       if (this.player.isPersonalFM) return;
-      this.$route.name === "next"
+      this.$route.name === 'next'
         ? this.$router.go(-1)
-        : this.$router.push({ name: "next" });
+        : this.$router.push({ name: 'next' });
     },
     formatTrackTime(value) {
-      if (!value) return "";
+      if (!value) return '';
       let min = ~~((value / 60) % 60);
-      let sec = (~~(value % 60)).toString().padStart(2, "0");
+      let sec = (~~(value % 60)).toString().padStart(2, '0');
       return `${min}:${sec}`;
     },
     hasList() {
@@ -262,10 +260,10 @@ export default {
     },
     goToAlbum() {
       if (this.player.currentTrack.al.id === 0) return;
-      this.$router.push({ path: "/album/" + this.player.currentTrack.al.id });
+      this.$router.push({ path: '/album/' + this.player.currentTrack.al.id });
     },
     goToArtist(id) {
-      this.$router.push({ path: "/artist/" + id });
+      this.$router.push({ path: '/artist/' + id });
     },
   },
 };
