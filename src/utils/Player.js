@@ -7,7 +7,7 @@ import { getTrackDetail, scrobble, getMP3 } from "@/api/track";
 
 import { isAccountLoggedIn } from "@/utils/auth";
 import { cacheTrackSource, getTrackSource } from "@/utils/db";
-import { isCreateMpris, isCreateTray } from "@/utils/platform";
+import { isCreateMpris } from "@/utils/platform"; //isCreateTray
 import shuffle from "lodash/shuffle";
 import { Howler, Howl } from "howler";
 import store from "@/store";
@@ -35,15 +35,15 @@ function setTitle(track) {
   document.title = track
     ? `${track.name} · ${track.ar[0].name} - YesPlayMusic`
     : "YesPlayMusic";
-  if (isCreateTray) {
-    ipcRenderer.send("updateTrayTooltip", document.title);
-  }
+  // if (isCreateTray) {
+  //   ipcRenderer.send("updateTrayTooltip", document.title);
+  // }
 }
 
-function setTrayLikeState(isLiked) {
-  if (isCreateTray) {
-    ipcRenderer.send("updateTrayLikeState", isLiked);
-  }
+function setTrayLikeState() { //isLiked
+  // if (isCreateTray) {
+  //   ipcRenderer.send("updateTrayLikeState", isLiked);
+  // }
 }
 
 export default class {
@@ -224,9 +224,9 @@ export default class {
 
   _setPlaying(isPlaying) {
     this._playing = isPlaying;
-    if (isCreateTray) {
-      ipcRenderer.send('updateTrayPlayState', this._playing);
-    }
+    // if (isCreateTray) {
+    //   ipcRenderer.send('updateTrayPlayState', this._playing);
+    // }
   }
   _setIntervals() {
     // 同步播放进度

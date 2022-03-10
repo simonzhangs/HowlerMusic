@@ -16,7 +16,7 @@
         v-for="playlist in ownPlaylists"
         :key="playlist.id"
         class="playlist"
-        @click="addTrackToplaylist(playlist.id)"
+        @click="addTrackToPlaylist(playlist.id)"
       >
         <img :src="playlist.coverImgUrl | resizeImage(224)" />
         <div class="info">

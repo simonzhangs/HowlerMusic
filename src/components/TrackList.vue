@@ -1,4 +1,5 @@
 <template>
+  <!-- 播放列表多行歌曲列表+右键菜单 -->
   <div class="track-list">
     <ContextMenu ref="menu">
       <div v-show="type !== 'cloudDisk'" class="item-info">

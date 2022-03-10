@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="like-button">
-            <button-icon
+            <ButtonIcon
               :title="$t('player.like')"
               @click.native="likeATrack(player.currentTrack.id)"
             >
@@ -67,7 +67,7 @@
                 icon-class="heart-solid"
               >
               </svg-icon>
-            </button-icon>
+            </ButtonIcon>
           </div>
         </div>
         <div class="blank"></div>
@@ -76,30 +76,30 @@
       <div class="middle-control-buttons">
         <div class="blank"></div>
         <div class="container" @click.stop>
-          <button-icon
+          <ButtonIcon
             v-show="!player.isPersonalFM"
             :title="$t('player.previous')"
             @click.native="playPrevTrack"
           >
             <svg-icon icon-class="previous" />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             v-show="player.isPersonalFM"
             title="不喜欢"
             @click.native="moveToFMTrash"
           >
             <svg-icon icon-class="thumbs-down" />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             class="play"
             :title="$t(player.playing ? 'player.pause' : 'player.play')"
             @click.native="playOrPause"
           >
             <svg-icon :icon-class="player.playing ? 'pause' : 'play'" />
-          </button-icon>
-          <button-icon :title="$t(player.next)" @click.native="playNextTrack">
+          </ButtonIcon>
+          <ButtonIcon :title="$t('player.next')" @click.native="playNextTrack">
             <svg-icon icon-class="next" />
-          </button-icon>
+          </ButtonIcon>
         </div>
         <div class="blank"></div>
       </div>
@@ -107,8 +107,8 @@
       <div class="right-control-buttons">
         <div class="blank"></div>
         <div class="container" @click.stop>
-          <button-icon
-            :title="$t(player.nextUp)"
+          <ButtonIcon
+            :title="$t('player.nextUp')"
             :class="{
               active: $route.name === 'next',
               disabled: player.isPersonalFM,
@@ -116,8 +116,8 @@
             @click.native="goToNextTracksPage"
           >
             <svg-icon icon-class="list" />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             :class="{
               active: player.repeatMode !== 'off',
               disabled: player.isPersonalFM,
@@ -135,17 +135,17 @@
             />
             <svg-icon
               v-show="player.repeatMode === 'one'"
-              icon-class="repeated-1"
+              icon-class="repeat-1"
             />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
-            :tilte="$t('player.shuffle')"
+            :title="$t('player.shuffle')"
             @click.native="switchShuffle"
           >
             <svg-icon icon-class="shuffle" />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             v-if="settings.enableReversedMode"
             :class="{
               active: player.reversed,
@@ -155,16 +155,16 @@
             @click.native="switchReversed"
           >
             <svg-icon icon-class="sort-up" />
-          </button-icon>
+          </ButtonIcon>
           <div class="volume-control">
-            <button-icon :title="$t('player.mute')" @click.native="mute">
+            <ButtonIcon :title="$t('player.mute')" @click.native="mute">
               <svg-icon v-show="volume > 0.5" icon-class="volume" />
               <svg-icon v-show="volume === 0" icon-class="volume-mute" />
               <svg-icon
                 v-show="volume <= 0.5 && volume !== 0"
                 icon-class="volume-half"
               />
-            </button-icon>
+            </ButtonIcon>
             <div class="volume-bar">
               <vue-slider
                 v-model="volume"
@@ -180,14 +180,14 @@
             </div>
           </div>
 
-          <button-icon
+          <ButtonIcon
             class="lyrics-button"
             title="歌词"
             style="margin-left: 12px"
             @click.native="toggleLyrics"
           >
             <svg-icon icon-class="arrow-up" />
-          </button-icon>
+          </ButtonIcon>
         </div>
       </div>
     </div>

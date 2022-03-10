@@ -1,0 +1,107 @@
+Project
+├─.env (环境配置)
+├─.prettierrc
+├─babel.config.js
+├─jsconfig.json
+├─LICENSE
+├─package-lock.json
+├─package.json
+├─README.md
+├─vue.config.js
+├─src
+|  ├─App.vue
+|  ├─background.js
+|  ├─main.js
+|  ├─ncmModDef.js
+|  ├─registerServiceWorker.js
+|  ├─views (页面)
+|  |   ├─album.vue (专辑)
+|  |   ├─artist.vue (艺人)
+|  |   ├─explore.vue (发现)
+|  |   ├─home.vue (主页) 
+|  |   ├─library.vue (个人库)
+|  |   ├─login.vue (登录)
+|  |   ├─loginAccount.vue (账号登录)
+|  |   ├─loginUsername.vue (用户名登陆)
+|  |   ├─lyrics.vue (歌词)
+|  |   ├─mv.vue (mv)
+|  |   ├─playlist.vue (歌单)
+|  |   └─settings.vue (设置)
+|  ├─utils (常用功能)
+|  |   ├─auth.js (鉴权)
+|  |   ├─common.js (常用功能)
+|  |   ├─db.js (数据库)
+|  |   ├─filters.js (单位转换)
+|  |   ├─lyrics.js (歌词解析)
+|  |   ├─nativeAlert.js (信息提示)
+|  |   ├─platform.js (网页运行环境)
+|  |   ├─Player.js (构造播放器)
+|  |   ├─playlist.js (播放列表)
+|  |   ├─request.js (资源请求)
+|  |   ├─shortcuts.js (快捷键设置)
+|  |   ├─staticData.js (静态资源)
+|  |   └─updateApp.js (全局设置更新)
+|  ├─store (状态管理库)
+|  |   ├─actions.js
+|  |   ├─index.js
+|  |   ├─initLocalStorage.js (初始化状态)
+|  |   ├─mutations.js
+|  |   └─state.js
+|  ├─router (路由)
+|  |   └─index.js
+|  ├─locale (语言)
+|  |   ├─index.js
+|  |   ├─lang
+|  |   |  ├─en.js
+|  |   |  ├─tr.js
+|  |   |  ├─zh-CN.js
+|  |   |  └zh-TW.js
+|  ├─electron
+|  |    └─ipcRenderer.js
+|  ├─components (组件)
+|  |     ├─ArtistsInline.vue (单曲艺人名称)
+|  |     ├─ButtonIcon.vue (按钮组件)
+|  |     ├─ButtonTwoTone.vue (文字+图标 按钮)
+|  |     ├─ContextMenu.vue (菜单容器组件)
+|  |     ├─Cover.vue (封面组件)
+|  |     ├─CoverRow.vue (多排播放封面组件)
+|  |     ├─DailyTracksCard.vue (每日推荐)
+|  |     ├─ExplicitSymbol.vue (图标E组件)
+|  |     ├─FMCard.vue (FM组件)
+|  |     ├─Modal.vue (模态框组件)
+|  |     ├─ModalAddTrackToPlaylist.vue (添加到歌单)
+|  |     ├─ModalNewPlaylist.vue (新建歌单)
+|  |     ├─MvRow.vue (mv组件)
+|  |     ├─Navbar.vue (导航栏组件)
+|  |     ├─Player.vue (页面底部播放控件)
+|  |     ├─Scrollbar.vue (右侧滚动条组件)
+|  |     ├─SvgIcon.vue (svg图标)
+|  |     ├─Toast.vue (文本信息提示组件)
+|  |     ├─TrackList.vue (播放列表多行歌曲列表)
+|  |     └─TrackListItem.vue (播放列表单首歌曲组件)
+|  ├─assets (资源)
+|  |   ├─logo.png
+|  |   ├─icons
+|  |   ├─fonts
+|  |   ├─css
+|  |   |  ├─global.scss
+|  |   |  ├─nprogress.css
+|  |   |  ├─plyr.css
+|  |   |  └─slider.css
+|  ├─api (后端api)
+|  |  ├─album.js
+|  |  ├─artist.js
+|  |  ├─auth.js
+|  |  ├─lastfm.js
+|  |  ├─mv.js
+|  |  ├─others.js
+|  |  ├─playlist.js
+|  |  ├─track.js
+|  |  └─user.js
+├─public
+|   ├─favicon.ico
+|   ├─index.html
+|   ├─img
+|   |  ├─touchbar
+|   |  ├─logos
+|   |  ├─icons

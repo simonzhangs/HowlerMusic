@@ -347,7 +347,7 @@ export default {
     },
     updateCurrentTab(tab) {
       if (!isAccountLoggedIn() && tab !== 'playlists') {
-        this.show(locale.t('toast.needToLogin'));
+        this.showToast(locale.t('toast.needToLogin'));
         return;
       }
       this.currentTab = tab;
@@ -377,7 +377,7 @@ export default {
         return;
       }
       this.updateModal({
-        ModalName: 'newPlaylistModal',
+        modalName: 'newPlaylistModal',
         key: 'show',
         value: true,
       });

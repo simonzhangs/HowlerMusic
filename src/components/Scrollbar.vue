@@ -1,5 +1,5 @@
 <template>
-  <!-- 滚动条组件 -->
+  <!-- 右侧滚动条组件 -->
   <div>
     <transition name="fade">
       <div

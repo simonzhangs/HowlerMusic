@@ -1,5 +1,6 @@
 <template>
-  <!-- 首页 每日推荐组件 -->
+  <!-- 每日推荐组件 -->
+  <!-- 用于 首页页面 -->
   <div class="daily-recommend-card" @click="goToDailyTracks">
     <img :src="coverUrl" />
     <div class="container">
@@ -66,10 +67,10 @@ export default {
         this.showToast(locale.t("toast.needToLogin"));
         return;
       }
-      let trackIDs = this.dailyTracks.map((t) => t.id);
+      let trackIDs = this.dailyTracks.map(t => t.id);
       this.$store.state.player.replacePlaylist(
         trackIDs,
-        "/daily/song",
+        "/daily/songs",
         "url",
         this.dailyTracks[0].id
       );

@@ -66,8 +66,8 @@ export function changeAppearance(appearance) {
       : 'light';
   }
   document.body.setAttribute('data-theme', appearance);
-  document.querySelector('meta[name="theme-color"]');
-  // .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
+  document.querySelector('meta[name="theme-color"]')
+  .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
 }
 
 export function dailyTask() {
@@ -197,4 +197,16 @@ export function bytesToSize(bytes) {
   else if (bytes < gigaBytes)
     return (bytes / megaBytes).toFixed(decimal) + ' MB';
   else return (bytes / gigaBytes).toFixed(decimal) + ' GB';
+}
+
+export function throttle(fn, time) {
+  let isRun = false;
+  return function() {
+    if (isRun) return;
+    isRun = true;
+    fn.apply(this, arguments);
+    setTimeout(() => {
+      isRun = false;
+    }, time);
+  };
 }

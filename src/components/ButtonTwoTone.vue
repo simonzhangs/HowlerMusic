@@ -1,5 +1,7 @@
 <template>
-  <!-- 按钮 + slot 触发内容 组件 -->
+  <!-- 带图标和文字的按钮 -->
+  <!-- 图标按钮 + slot 触发内容 组件 -->
+  <!-- 用于带文字+图标+按钮的页面 -->
   <button :style="buttonStyle" :class="color">
     <svg-icon
       v-if="iconClass !== null"

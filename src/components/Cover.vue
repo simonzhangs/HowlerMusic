@@ -1,5 +1,6 @@
 <template>
-  <!-- 单个播放封面子组件 其他组件中使用时需要传入 props -- 用于设置封面大小、阴影等 -->
+  <!-- 单个播放封面子组件，其他组件中使用时需要传入 props -- 用于设置封面大小、阴影等 -->
+  <!-- 用于 CoverRow 组件，以及包含播放封面的页面 -->
   <div
     class="cover"
     :class="{ 'cover-hover': coverHover }"
@@ -32,6 +33,7 @@
 
 <script>
 export default {
+  name: 'Cover',
   props: {
     id: { type: Number, required: true },
     type: { type: String, required: true },

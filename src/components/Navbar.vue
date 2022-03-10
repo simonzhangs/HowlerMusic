@@ -145,14 +145,17 @@ export default {
   },
   methods: {
     go(where) {
-      if (where === 'back') return;
+      if (where === 'back') this.$router.go(-1);
+      else this.$router.go(1);
+    },
+    doSearch() {
+      if (!this.keywords) return;
       if (
         this.$route.name === 'search' &&
         this.$route.params.keywords === this.keywords
       ) {
         return;
       }
-
       this.$router.push({
         name: 'search',
         params: { keywords: this.keywords },

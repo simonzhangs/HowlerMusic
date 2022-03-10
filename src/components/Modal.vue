@@ -1,5 +1,6 @@
 <template>
-  <!-- 利用 slot 新建歌单 或 添加到歌单 组件 -->
+  <!-- 模态框组件，配合 slot来完成 新建歌单 或 添加到歌单功能 -->
+  <!-- 用于 ModalAddTrackToPlaylist、 ModalNewPlaylist 组件 -->
   <div v-show="show" class="shade" @click="clickOutside">
     <div class="modal" :style="modalStyles" @click.stop>
       <div class="header">

@@ -59,6 +59,7 @@ export default {
     },
     getUrl(mv) {
       let url = mv.imgurl16v9 ?? mv.cover ?? mv.coverUrl;
+      if (!url) return;
       return url.replace(/^http:/, 'https:') + '?param=464y260';
     },
     getTitle(mv) {

@@ -1,5 +1,7 @@
 <template>
-  <!-- svg-icon 图标 子组件 -->
+  <!-- 按钮组件 -->
+  <!-- 可利用 slot 嵌入svg 图标，构成图标按钮-->
+  <!-- 用于 FMCard、Player 组件 -->
   <button class="button-icon">
     <slot></slot>
   </button>
@@ -7,7 +9,7 @@
 
 <script>
 export default {
-  name: "ButtonIcon",
+  name: 'ButtonIcon',
 };
 </script>
 

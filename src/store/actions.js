@@ -18,18 +18,18 @@ export default {
   showToast({ state, commit }, text) {
     if (state.toast.timer !== null) {
       clearTimeout(state.toast.timer);
-      commit("updateToast", { show: false, text: "", timer: null });
+      commit("updateToast", { show: false, text: '', timer: null });
     }
     commit("updateToast", {
       show: true,
       text,
       timer: setTimeout(() => {
         commit("updateToast", {
-          show: true,
+          show: false,
           text: state.toast.text,
           timer: null,
         });
-      }, 3200),
+      }, 3000),
     });
   },
   likeATrack({ state, commit, dispatch }, id) {
@@ -54,7 +54,7 @@ export default {
             data: newLikedSongs,
           });
         }
-        dispatch("fetchLikedSongsWithDetail");
+        dispatch("fetchLikedSongsWithDetails");
       })
       .catch(() => {
         dispatch("showToast", "操作失败，专辑下架或版权锁定");
@@ -63,7 +63,7 @@ export default {
   fetchLikedSongs: ({ state, commit }) => {
     if (!isLooseLoggedIn()) return;
     if (isAccountLoggedIn()) {
-      return userLikedSongsIDs({ uid: state.data.user.uid }).then((result) => {
+      return userLikedSongsIDs({ uid: state.data.user.userId }).then((result) => {
         if (result.ids) {
           commit("updateLikedXXX", {
             name: "songs",
@@ -137,7 +137,7 @@ export default {
     return likedArtists({ limit: 2000 }).then((result) => {
       if (result.data) {
         commit("updateLikedXXX", {
-          name: "mvs",
+          name: "artists",
           data: result.data,
         });
       }

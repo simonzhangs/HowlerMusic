@@ -1,9 +1,10 @@
 <template>
-  <!-- 一行播放封面组件 由子组件 cover 构成 -->
+  <!-- 多排播放封面组件 由子组件 cover 构成 -->
+  <!-- 用于多排播放封面展示的 页面 -->
   <div class="cover-row" :style="rowStyles">
     <div
-      v-for="item in items"
-      :key="item.id"
+      v-for="(item, index) in items"
+      :key="index"
       class="item"
       :class="{ artist: type === 'artist' }"
     >

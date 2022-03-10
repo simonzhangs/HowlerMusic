@@ -1,6 +1,6 @@
 <template>
-  <!-- 右上角 点击/右键触发的菜单容器 子组件 -->
-  <!-- 用于 navbar / tracklist 组件 -->
+  <!-- 菜单容器子组件，配合slot组建自定义菜单 -->
+  <!-- 用于 Navbar、TrackList 组件,以及包含菜单的页面 -->
   <div ref="contextMenu" class="context-menu">
     <div
       v-if="showMenu"

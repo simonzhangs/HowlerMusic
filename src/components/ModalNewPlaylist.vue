@@ -61,7 +61,7 @@ export default {
         if (value) {
           this.$store.commit("enableScrolling", false);
         } else {
-          this.$store.commit("enbaleScrolling", true);
+          this.$store.commit("enableScrolling", true);
         }
       },
     },

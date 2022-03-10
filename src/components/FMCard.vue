@@ -1,5 +1,6 @@
 <template>
-  <!-- 首页 fm 组件 -->
+  <!-- FM 组件 -->
+  <!-- 用于 首页页面 -->
   <div class="fm" :style="{ background }" date-theme="dark">
     <img :src="nextTrackCover" style="display: none" />
     <img
@@ -14,19 +15,19 @@
       </div>
       <div class="controls">
         <div class="buttons">
-          <button-icon title="不喜欢" @click.native="moveToFMTrash">
+          <ButtonIcon title="不喜欢" @click.native="moveToFMTrash">
             <svg-icon id="thumbs-down" icon-class="thumbs-down" />
-          </button-icon>
-          <button-icon
+          </ButtonIcon>
+          <ButtonIcon
             :title="$t(isPlaying ? 'player.pasue' : 'player.play')"
             class="play"
             @click.native="play"
           >
             <svg-icon :icon-class="isPlaying ? 'pause' : 'play'" />
-          </button-icon>
-          <button-icon :title="$t('player.next')" @click.native="next">
+          </ButtonIcon>
+          <ButtonIcon :title="$t('player.next')" @click.native="next">
             <svg-icon icon-class="next" />
-          </button-icon>
+          </ButtonIcon>
         </div>
         <div class="card-name"><svg-icon icon-class="fm" />私人FM</div>
       </div>
@@ -87,7 +88,7 @@ export default {
       if (this.track.album.id === 0) return;
       this.$router.push({ path: "/album/" + this.track.album.id });
     },
-    moveToTrash() {
+    moveToFMTrash() {
       this.player.moveToFMTrash();
       this.getColor();
     },

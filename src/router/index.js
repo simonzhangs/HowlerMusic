@@ -84,6 +84,14 @@ const routes = [
     path: '/album/:id',
     name: 'album',
     component: () => import('@/views/album.vue')
+  },
+  {
+    path: '/daily/songs',
+    name: 'dailySongs',
+    component: () => import('@/views/dailyTracks.vue'),
+    meta: {
+      requireAccountLogin: true,
+    },
   }
 ];
 
