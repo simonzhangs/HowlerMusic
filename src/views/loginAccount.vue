@@ -222,9 +222,11 @@ export default {
       }
       if (data.code === 200) {
         setCookies(data.cookie);
-        this.updateData({ key: 'loginMode', value: 'account'});
+        this.$store.commit('updateData', { key: 'loginMode', value: 'account'});
+        // this.updateData({ key: 'loginMode', value: 'account'});
         this.$store.dispatch('fetchUserProfile').then(() => {
           this.$store.dispatch('fetchLikedPlaylist').then(() => {
+            this.$store.dispatch('fetchLikedSongsWithDetails');
             this.$router.push({ path: '/library' });
           });
         });

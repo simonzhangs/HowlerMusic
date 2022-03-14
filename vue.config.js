@@ -3,6 +3,11 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
+const webpack = require('webpack')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const productionGzipExtensions = ['js', 'css']
+// const isProduction = process.env.NODE_ENV === 'production'
+
 module.exports = {
   devServer: {
     disableHostCheck: true,
@@ -18,7 +23,7 @@ module.exports = {
     },
   },
   pwa: {
-    name: 'YesPlayMusic',
+    name: 'HowlerMusic',
     iconPaths: {
       favicon32: 'img/icons/favicon-32x32.png',
     },
@@ -35,7 +40,7 @@ module.exports = {
       entry: 'src/main.js',
       template: 'public/index.html',
       filename: 'index.html',
-      title: 'YesPlayMusic',
+      title: 'HowlerMusic',
       chunks: ['main', 'chunk-vendors', 'chunk-common', 'index'],
     },
   },
@@ -53,122 +58,41 @@ module.exports = {
         symbolId: 'icon-[name]',
       })
       .end();
+
+      // 生产环境，开启js\css压缩
+    if (process.env.NODE_ENV === 'production') {
+      config.plugin('compression-webpack-plugin').use(new CompressionWebpackPlugin({
+        test: /\.(js|css|less)$/, // 匹配文件名
+        threshold: 10240, // 对超过10k的数据压缩
+        minRatio: 0.8,
+        deleteOriginalAssets: true // 删除源文件
+      }))
+      config.plugin('chunckPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
+        maxChunks: 8,
+        minChunkSize: 100
+      }])
+    }
   },
-  // 添加插件的配置
-  pluginOptions: {
-    // electron-builder的配置文件
-    electronBuilder: {
-      nodeIntegration: true,
-      externals: [
-        '@unblockneteasemusic/server',
-        '@unblockneteasemusic/server/src/consts',
-      ],
-      builderOptions: {
-        productName: 'YesPlayMusic',
-        copyright: 'Copyright © YesPlayMusic',
-        // compression: "maximum", // 机器好的可以打开，配置压缩，开启后会让 .AppImage 格式的客户端启动缓慢
-        asar: true,
-        publish: [
-          {
-            provider: 'github',
-            owner: 'qier222',
-            repo: 'YesPlayMusic',
-            vPrefixedTagName: true,
-            releaseType: 'draft',
-          },
-        ],
-        directories: {
-          output: 'dist_electron',
-        },
-        mac: {
-          target: [
-            {
-              target: 'dmg',
-              arch: ['x64', 'arm64', 'universal'],
-            },
-          ],
-          artifactName: '${productName}-${os}-${version}-${arch}.${ext}',
-          category: 'public.app-category.music',
-          darkModeSupport: true,
-        },
-        win: {
-          target: [
-            {
-              target: 'portable',
-              arch: ['x64'],
-            },
-            {
-              target: 'nsis',
-              arch: ['x64'],
-            },
-          ],
-          publisherName: 'YesPlayMusic',
-          icon: 'build/icons/icon.ico',
-          publish: ['github'],
-        },
-        linux: {
-          target: [
-            {
-              target: 'AppImage',
-              arch: ['x64'],
-            },
-            {
-              target: 'tar.gz',
-              arch: ['x64', 'arm64'],
-            },
-            {
-              target: 'deb',
-              arch: ['x64', 'armv7l', 'arm64'],
-            },
-            {
-              target: 'rpm',
-              arch: ['x64'],
-            },
-            {
-              target: 'snap',
-              arch: ['x64'],
-            },
-            {
-              target: 'pacman',
-              arch: ['x64'],
-            },
-          ],
-          category: 'Music',
-          icon: './build/icon.icns',
-        },
-        dmg: {
-          icon: 'build/icons/icon.icns',
-        },
-        nsis: {
-          oneClick: true,
-          perMachine: true,
-          deleteAppDataOnUninstall: true,
-        },
-      },
-      // 主线程的配置文件
-      chainWebpackMainProcess: config => {
-        config.plugin('define').tap(args => {
-          args[0]['IS_ELECTRON'] = true;
-          return args;
-        });
-        config.resolve.alias.set(
-          'jsbi',
-          path.join(__dirname, 'node_modules/jsbi/dist/jsbi-cjs.js')
-        );
-      },
-      // 渲染线程的配置文件
-      chainWebpackRendererProcess: config => {
-        // 渲染线程的一些其他配置
-        // Chain webpack config for electron renderer process only
-        // The following example will set IS_ELECTRON to true in your app
-        config.plugin('define').tap(args => {
-          args[0]['IS_ELECTRON'] = true;
-          return args;
-        });
-      },
-      // 主入口文件
-      // mainProcessFile: 'src/main.js',
-      // mainProcessArgs: []
-    },
-  },
+
+  // configureWebpack: {
+  //   resolve: {
+  //     alias: {
+
+  //     }
+  //   },
+  //   plugins: [
+  //     new CompressionWebpackPlugin({
+  //       algorithm: 'gzip',
+  //       test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+  //       threshold: 10240, // 对超过10k的数据压缩
+  //       minRatio: 0.8,
+  //       deleteOriginalAssets: true //删除源文件
+  //     }),
+  //     new webpack.optimize.LimitChunkCountPlugin({
+  //       maxChunks: 5,
+  //       minChunkSize: 100
+  //     })
+  //   ]
+
+  // }
 };

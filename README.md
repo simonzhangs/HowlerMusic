@@ -28,3 +28,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### netease_api
+https://netease-cloud-music-api-two-rust.vercel.app/

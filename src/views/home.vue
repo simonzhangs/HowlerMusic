@@ -80,6 +80,7 @@ import { toplistOfArtists } from '@/api/artist';
 import  { newAlbums } from '@/api/album';
 
 import { byAppleMusic } from "@/utils/staticData";
+import initObserveSpaFirstScreenRenderTime from '@/utils/spaFirstScreen';
 import { mapState } from "vuex";
 
 import NProgress from "nprogress";
@@ -118,6 +119,7 @@ export default {
   },
   activated() {
     this.loadData();
+    initObserveSpaFirstScreenRenderTime();
     this.$parent.$refs.scrollbar.restorePosition();
   },
   methods: {

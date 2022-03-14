@@ -173,7 +173,7 @@ export default {
       this.$router.push({ name: 'settings' });
     },
     toGithub() {
-      window.open('https://github.com/simonzhangs/ZBoQiQI-Music');
+      window.open('https://github.com/simonzhangs/HowlerMusic');
     },
     toLogin() {
       if (process.env.IS_ELECTRON === true) {

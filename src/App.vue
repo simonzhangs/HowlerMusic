@@ -26,16 +26,16 @@
 
 <script>
 import { mapState } from "vuex";
+
 import ModalNewPlaylist from "./components/ModalNewPlaylist.vue";
 import ModalAddTrackToPlaylist from "./components/ModalAddTrackToPlaylist.vue";
 import Navbar from "./components/Navbar.vue";
 import Player from "./components/Player.vue";
 import Scrollbar from "./components/Scrollbar.vue";
 import Toast from "./components/Toast.vue";
-
-import { ipcRenderer } from "./electron/ipcRenderer";
-import { isAccountLoggedIn, isLooseLoggedIn } from "@/utils/auth";
 import Lyrics from "./views/lyrics.vue";
+
+import { isAccountLoggedIn, isLooseLoggedIn } from "@/utils/auth";
 
 export default {
   name: "App",
@@ -50,7 +50,6 @@ export default {
   },
   data() {
     return {
-      isElectron: process.env.IS_ELECTRON, //true || undefined
       userSelectNone: false,
     };
   },
@@ -59,6 +58,7 @@ export default {
     isAccountLoggedIn() {
       return isAccountLoggedIn();
     },
+    // 判断页面是否展示播放器
     showPlayer() {
       return (
         [
@@ -70,27 +70,30 @@ export default {
         ].includes(this.$route.name) === false
       );
     },
+    // 判断是否存在播放器
     enablePlayer() {
       return this.player.enabled && this.$route.name !== "lastfmCallback";
     },
+    // 判断是否展示导航栏
     showNavbar() {
       return this.$route.name !== "lastfmCallback";
     },
   },
   created() {
-    if (this.isElectron) ipcRenderer(this);
     window.addEventListener('keydown', this.handleKeydown);
     this.fetchData();
   },
   methods: {
+    // 网页空格控制播放暂停
     handleKeydown(e) {
       if (e.code === 'Space') {
         if (e.target.tagName === 'INPUT') return false;
-        if (this.$route.name === 'mv') return false;
+        // if (this.$route.name === 'mv') return false;
         e.preventDefault();
         this.player.playOrPause();
       }
     },
+    // 判断是否登陆，来获取用户数据
     fetchData() {
       if (!isLooseLoggedIn()) return;
       this.$store.dispatch('fetchLikedSongs');

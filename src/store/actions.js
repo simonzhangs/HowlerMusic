@@ -1,7 +1,7 @@
-import { isAccountLoggedIn, isLooseLoggedIn } from "@/utils/auth";
-import { likeATrack } from "@/api/track"; //喜欢音乐 api
-import { getTrackDetail } from "@/api/track"; //获取歌曲详情 api
-import { getPlaylistDetail } from "@/api/playlist"; //获取歌单详情 api
+import { isAccountLoggedIn, isLooseLoggedIn } from '@/utils/auth';
+import { likeATrack } from '@/api/track'; //喜欢音乐 api
+import { getTrackDetail } from '@/api/track'; //获取歌曲详情 api
+import { getPlaylistDetail } from '@/api/playlist'; //获取歌单详情 api
 import {
   userAccount,
   userLikedSongsIDs,
@@ -11,20 +11,19 @@ import {
   likedArtists,
   likedMVs,
   cloudDisk,
-} from "@/api/user";
-
+} from '@/api/user';
 
 export default {
   showToast({ state, commit }, text) {
     if (state.toast.timer !== null) {
       clearTimeout(state.toast.timer);
-      commit("updateToast", { show: false, text: '', timer: null });
+      commit('updateToast', { show: false, text: '', timer: null });
     }
-    commit("updateToast", {
+    commit('updateToast', {
       show: true,
       text,
       timer: setTimeout(() => {
-        commit("updateToast", {
+        commit('updateToast', {
           show: false,
           text: state.toast.text,
           timer: null,
@@ -32,9 +31,17 @@ export default {
       }, 3000),
     });
   },
+  fetchUserProfile: ({ commit }) => {
+    if (!isAccountLoggedIn()) return;
+    return userAccount().then(result => {
+      if (result.code === 200) {
+        commit('updateData', { key: 'user', value: result.profile });
+      }
+    });
+  },
   likeATrack({ state, commit, dispatch }, id) {
     if (!isAccountLoggedIn()) {
-      dispatch("showToast", "此操作需要登录网易云账号");
+      dispatch('showToast', '此操作需要登录网易云账号');
       return;
     }
     let like = true;
@@ -42,31 +49,31 @@ export default {
     likeATrack({ id, like })
       .then(() => {
         if (like === false) {
-          commit("updateLikedXXX", {
-            name: "songs",
-            data: state.liked.songs.filter((d) => d !== id),
+          commit('updateLikedXXX', {
+            name: 'songs',
+            data: state.liked.songs.filter(d => d !== id),
           });
         } else {
           let newLikedSongs = state.liked.songs;
           newLikedSongs.push(id);
-          commit("updateLikedXXX", {
-            name: "songs",
+          commit('updateLikedXXX', {
+            name: 'songs',
             data: newLikedSongs,
           });
         }
-        dispatch("fetchLikedSongsWithDetails");
+        dispatch('fetchLikedSongsWithDetails');
       })
       .catch(() => {
-        dispatch("showToast", "操作失败，专辑下架或版权锁定");
+        dispatch('showToast', '操作失败，专辑下架或版权锁定');
       });
   },
   fetchLikedSongs: ({ state, commit }) => {
     if (!isLooseLoggedIn()) return;
     if (isAccountLoggedIn()) {
-      return userLikedSongsIDs({ uid: state.data.user.userId }).then((result) => {
+      return userLikedSongsIDs({ uid: state.data.user.userId }).then(result => {
         if (result.ids) {
-          commit("updateLikedXXX", {
-            name: "songs",
+          commit('updateLikedXXX', {
+            name: 'songs',
             data: result.ids,
           });
         }
@@ -75,22 +82,23 @@ export default {
       // TODO:搜索ID登录的用户
     }
   },
+  // 取喜欢的歌曲中前12首
   fetchLikedSongsWithDetails: ({ state, commit }) => {
     return getPlaylistDetail(state.data.likedSongPlaylistID, true).then(
-      (result) => {
+      result => {
         if (result.playlist?.trackIds?.length === 0) {
-          return new Promise((resolve) => {
+          return new Promise(resolve => {
             resolve();
           });
         }
         return getTrackDetail(
           result.playlist.trackIds
             .slice(0, 12)
-            .map((t) => t.id)
-            .join(",")
-        ).then((result) => {
-          commit("updateLikedXXX", {
-            name: "songsWithDetails",
+            .map(t => t.id)
+            .join(',')
+        ).then(result => {
+          commit('updateLikedXXX', {
+            name: 'songsWithDetails',
             data: result.songs,
           });
         });
@@ -104,15 +112,15 @@ export default {
         uid: state.data.user?.userId,
         limit: 2000,
         timestamp: new Date().getTime(),
-      }).then((result) => {
+      }).then(result => {
         if (result.playlist) {
-          commit("updateLikedXXX", {
-            name: "playlists",
+          commit('updateLikedXXX', {
+            name: 'playlists',
             data: result.playlist,
           });
-          // 更新用户”喜欢的歌曲“歌单ID
-          commit("updateData", {
-            key: "likedSongPlaylistID",
+          // 更新用户 喜欢的歌曲 歌单ID
+          commit('updateData', {
+            key: 'likedSongPlaylistID',
             value: result.playlist[0].id,
           });
         }
@@ -123,10 +131,10 @@ export default {
   },
   fetchLikedAlbums: ({ commit }) => {
     if (!isAccountLoggedIn()) return;
-    return likedAlbums({ limit: 2000 }).then((result) => {
+    return likedAlbums({ limit: 2000 }).then(result => {
       if (result.data) {
-        commit("updateLikedXXX", {
-          name: "albums",
+        commit('updateLikedXXX', {
+          name: 'albums',
           data: result.data,
         });
       }
@@ -134,10 +142,10 @@ export default {
   },
   fetchLikedArtists: ({ commit }) => {
     if (!isAccountLoggedIn()) return;
-    return likedArtists({ limit: 2000 }).then((result) => {
+    return likedArtists({ limit: 2000 }).then(result => {
       if (result.data) {
-        commit("updateLikedXXX", {
-          name: "artists",
+        commit('updateLikedXXX', {
+          name: 'artists',
           data: result.data,
         });
       }
@@ -145,10 +153,10 @@ export default {
   },
   fetchLikedMvs: ({ commit }) => {
     if (!isAccountLoggedIn()) return;
-    return likedMVs({ limit: 1000 }).then((result) => {
+    return likedMVs({ limit: 1000 }).then(result => {
       if (result.data) {
-        commit("updateLikedXXX", {
-          name: "mvs",
+        commit('updateLikedXXX', {
+          name: 'mvs',
           data: result.data,
         });
       }
@@ -156,10 +164,10 @@ export default {
   },
   fetchCloudDisk: ({ commit }) => {
     if (!isAccountLoggedIn()) return;
-    return cloudDisk({ limit: 1000 }).then((result) => {
+    return cloudDisk({ limit: 1000 }).then(result => {
       if (result.data) {
-        commit("updateLikedXXX", {
-          name: "cloudDisk",
+        commit('updateLikedXXX', {
+          name: 'cloudDisk',
           data: result.data,
         });
       }
@@ -170,31 +178,23 @@ export default {
     return Promise.all([
       userPlayHistory({ uid: state.data.user?.userId, type: 0 }),
       userPlayHistory({ uid: state.data.user?.userId, type: 1 }),
-    ]).then((result) => {
+    ]).then(result => {
       const data = {};
-      const dataType = { 0: 'allData', 1: 'weekData'};
+      const dataType = { 0: 'allData', 1: 'weekData' };
       if (result[0] && result[1]) {
-          for (let i = 0; i < result.length; i++) {
-              const songData = result[i][dataType[i]].map(item => {
-                  const song = item.song;
-                  song.playCount = item.playCount;
-                  return song;
-              });
-              data[[dataType[i]]] = songData;
-          }
-          commit('updateLikedXXX', {
-              name: 'playHistory',
-              data: data,
+        for (let i = 0; i < result.length; i++) {
+          const songData = result[i][dataType[i]].map(item => {
+            const song = item.song;
+            song.playCount = item.playCount;
+            return song;
           });
+          data[[dataType[i]]] = songData;
+        }
+        commit('updateLikedXXX', {
+          name: 'playHistory',
+          data: data,
+        });
       }
     });
-  },
-  fetchUserProfile: ({ commit }) => {
-      if (!isAccountLoggedIn()) return;
-      return userAccount().then(result => {
-          if (result.code === 200) {
-              commit('updateData', { key: 'user', value: result.profile });
-          }
-      });
   },
 };
