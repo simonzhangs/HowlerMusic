@@ -8,7 +8,20 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 // const productionGzipExtensions = ['js', 'css']
 // const isProduction = process.env.NODE_ENV === 'production'
 
+// const cdn = {
+//   js: [
+//     "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
+//     "https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js",
+//     "https://cdn.jsdelivr.net/npm/vue-router@3.4.3/dist/vue-router.min.js",
+//     "https://cdn.jsdelivr.net/npm/axios@0.21.0/dist/axios.min.js",
+//     "https://cdn.jsdelivr.net/npm/vue-i18n@9.1.9/dist/vue-i18n.global.prod.js",
+//     "https://cdn.jsdelivr.net/npm/vue-clipboard2@0.3.1/dist/vue-clipboard.min.js",
+//   ]
+// };
+
 module.exports = {
+  // 生产环境打包不输出 map
+  // productionSourceMap: false,
   devServer: {
     disableHostCheck: true,
     port: process.env.DEV_SERVER_PORT || 8080,
@@ -35,6 +48,18 @@ module.exports = {
     //   swSrc: "dev/sw.js",
     // },
   },
+  // 打包忽略文件
+  // configureWebpack: {
+  //   externals: {
+  //     vue: 'Vue',
+  //     vuex: 'Vuex',
+  //     "vue-router": 'VueRouter',
+  //     axios: "axios",
+  //     "vue-i18n": 'VueI18n',
+  //     "vue-clipboard2": 'VueClipboard'
+  //   },
+  // },
+  // 入口配置
   pages: {
     index: {
       entry: 'src/main.js',
@@ -68,12 +93,12 @@ module.exports = {
         deleteOriginalAssets: true // 删除源文件
       }))
       config.plugin('chunckPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
-        maxChunks: 8,
+        maxChunks: 4,
         minChunkSize: 100
       }])
     }
-  },
 
+  },
   // configureWebpack: {
   //   resolve: {
   //     alias: {
