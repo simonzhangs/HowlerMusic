@@ -92,6 +92,10 @@ const routes = [
     meta: {
       requireAccountLogin: true,
     },
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('@/views/page404.vue'),
   }
 ];
 
@@ -118,11 +122,7 @@ router.beforeEach((to, from, next) => {
     if (isLooseLoggedIn()) {
       next();
     } else {
-      if (process.env.IS_ELECTRON === true) {
-        next({ path: '/login/account' });
-      } else {
         next({ path: '/login' });
-      }
     }
   } else {
     next();
