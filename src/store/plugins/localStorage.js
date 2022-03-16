@@ -3,7 +3,5 @@ export default store => {
     store.subscribe((mutations, state) => {
         localStorage.setItem('settings', JSON.stringify(state.settings));
         localStorage.setItem('data', JSON.stringify(state.data));
-        localStorage.setItem('player', JSON.stringify(state.player));
-        localStorage.setItem('liked', JSON.stringify(state.liked));
     })
 }

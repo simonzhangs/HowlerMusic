@@ -7,16 +7,11 @@ import { getTrackDetail, scrobble, getMP3 } from "@/api/track";
 
 import { isAccountLoggedIn } from "@/utils/auth";
 import { cacheTrackSource, getTrackSource } from "@/utils/db";
-import { isCreateMpris } from "@/utils/platform"; //isCreateTray
 import shuffle from "lodash/shuffle";
 import { Howler, Howl } from "howler";
 import store from "@/store";
 
 // player 构造器
-const electron =
-  process.env.IS_ELECTRON === true ? window.require("electron") : null;
-const ipcRenderer =
-  process.env.IS_ELECTRON === true ? electron.ipcRenderer : null;
 
 const delay = (ms) =>
   new Promise((resolve) => {
@@ -33,18 +28,10 @@ const excludeSaveKeys = [
 
 function setTitle(track) {
   document.title = track
-    ? `${track.name} · ${track.ar[0].name} - YesPlayMusic`
-    : "YesPlayMusic";
-  // if (isCreateTray) {
-  //   ipcRenderer.send("updateTrayTooltip", document.title);
-  // }
+    ? `${track.name} · ${track.ar[0].name} - HowlerMusic`
+    : "HowlerMusic";
 }
 
-function setTrayLikeState() { //isLiked
-  // if (isCreateTray) {
-  //   ipcRenderer.send("updateTrayLikeState", isLiked);
-  // }
-}
 
 export default class {
   constructor() {
@@ -89,10 +76,11 @@ export default class {
     // init
     this._init();
 
-    window.yesplaymusic = {};
-    window.yesplaymusic.player = this;
+    window.howlermusic = {};
+    window.howlermusic.player = this;
   }
 
+  // 循环播放模式
   get repeatMode() {
     return this._repeatMode;
   }
@@ -104,6 +92,7 @@ export default class {
     }
     this._repeatMode = mode;
   }
+  // 随机播放模式
   get shuffle() {
     return this._shuffle;
   }
@@ -118,6 +107,7 @@ export default class {
       this._shuffleTheList();
     }
   }
+  // 是否倒序播放
   get reversed() {
     return this._reversed;
   }
@@ -130,6 +120,7 @@ export default class {
     console.log("changing reversed to:", reversed);
     this._reversed = reversed;
   }
+  // 音量获取与设置
   get volume() {
     return this._volume;
   }
@@ -137,13 +128,14 @@ export default class {
     this._volume = volume;
     Howler.volume(volume);
   }
+  // 播放列表获取与设置
   get list() {
-    //存疑
     return this.shuffle ? this._shuffledList : this._list;
   }
   set list(list) {
     this._list = list;
   }
+  // 当前播放歌曲在播放列表里的index 获取与设置
   get current() {
     return this.shuffle ? this._shuffledCurrent : this._current;
   }
@@ -154,32 +146,41 @@ export default class {
       this._current = current;
     }
   }
+  // 是否启用player
   get enabled() {
     return this._enabled;
   }
+  // 是否正在播放
   get playing() {
     return this._playing;
   }
+  // 当前播放歌曲的详细信息
   get currentTrack() {
     return this._currentTrack;
   }
+  // 当前播放列表的信息
   get playlistSource() {
     return this._playlistSource;
   }
+  // 当这个list不为空时，会优先播放这个list的歌
   get playNextList() {
     return this._playNextList;
   }
+  // 是否是私人FM模式
   get isPersonalFM() {
     return this._isPersonalFM;
   }
+  // 私人FM当前歌曲
   get personalFMTrack() {
     return this._personalFMTrack;
   }
+  // 当前歌曲长度
   get currentTrackDuration() {
     const trackDuration = this._currentTrack.dt || 1000;
     let duration = ~~(trackDuration / 1000);
     return duration > 1 ? duration - 1 : duration;
   }
+  // 歌曲播放进度
   get progress() {
     return this._progress;
   }
@@ -188,10 +189,12 @@ export default class {
       this._howler.seek(value);
     }
   }
+  // 当前歌曲是否用户喜欢
   get isCurrentTrackLiked() {
     return store.state.liked.songs.includes(this.currentTrack.id);
   }
 
+  // 初始化
   _init() {
     this._loadSelfFromLocalStorage();
     Howler.autoUnlock = false;
@@ -224,9 +227,6 @@ export default class {
 
   _setPlaying(isPlaying) {
     this._playing = isPlaying;
-    // if (isCreateTray) {
-    //   ipcRenderer.send('updateTrayPlayState', this._playing);
-    // }
   }
   _setIntervals() {
     // 同步播放进度
@@ -235,9 +235,6 @@ export default class {
       if (this._howler === null) return;
       this._progress = this._howler.seek();
       localStorage.setItem('playerCurrentTrackTime', this._progress);
-      if (isCreateMpris) {
-        ipcRenderer.send('playerCurrentTrackTime', this._progress);
-      }
     }, 1000);
   }
   _getNextTrack() {
@@ -279,6 +276,7 @@ export default class {
     // 返回 [trackID, index]
     return [this.list[next], next];
   }
+  // 随机打乱播放列表
   async _shuffleTheList(firstTrackID = this._currentTrack.id) {
     let list = this._list.filter(tid => tid !== firstTrackID);
     if (firstTrackID === 'first') list = this._list;
@@ -326,7 +324,6 @@ export default class {
       if (this._currentTrack.name) {
         setTitle(this._currentTrack);
       }
-      setTrayLikeState(store.state.liked.songs.includes(this.currentTrack.id));
     }
     this.setOutputDevice();
   }
@@ -369,32 +366,32 @@ export default class {
       });
     }
   }
-  async _getAudioSourceFromUnblockMusic(track) {
-    console.debug(`[debug][Player.js] _getAudioSourceFromUnblockMusic`);
-    if (
-      process.env.IS_ELECTRON !== true ||
-      store.state.settings.enableUnblockNeteaseMusic === false
-    ) {
-      return null;
-    }
-    const source = await ipcRenderer.invoke(
-      'unblock-music',
-      track,
-      store.state.settings.unmSource
-    );
-    if (store.state.settings.automaticallyCacheSongs && source?.url) {
-      // TODO: 将unblockMusic字样换成真正的来源（比如酷我咪咕等）
-      cacheTrackSource(track, source.url, 128000, 'unblockMusic');
-    }
-    return source?.url;
-  }
+  // async _getAudioSourceFromUnblockMusic(track) {
+  //   console.debug(`[debug][Player.js] _getAudioSourceFromUnblockMusic`);
+  //   if (
+  //     process.env.IS_ELECTRON !== true ||
+  //     store.state.settings.enableUnblockNeteaseMusic === false
+  //   ) {
+  //     return null;
+  //   }
+  //   const source = await ipcRenderer.invoke(
+  //     'unblock-music',
+  //     track,
+  //     store.state.settings.unmSource
+  //   );
+  //   if (store.state.settings.automaticallyCacheSongs && source?.url) {
+  //     // TODO: 将unblockMusic字样换成真正的来源（比如酷我咪咕等）
+  //     cacheTrackSource(track, source.url, 128000, 'unblockMusic');
+  //   }
+  //   return source?.url;
+  // }
   _getAudioSource(track) {
     return this._getAudioSourceFromCache(String(track.id))
       .then(source => {
         return source ?? this._getAudioSourceFromNetease(track);
       })
       .then(source => {
-        return source ?? this._getAudioSourceFromUnblockMusic(track);
+        return source;
       });
   }
   _replaceCurrentTrack(
@@ -440,6 +437,7 @@ export default class {
       this._getAudioSource(track);
     });
   }
+  //player 实例对象从缓存读取
   _loadSelfFromLocalStorage() {
     const player = JSON.parse(localStorage.getItem('player'));
     if (!player) return;
@@ -503,9 +501,6 @@ export default class {
     };
 
     navigator.mediaSession.metadata = new window.MediaMetadata(metadata);
-    if (isCreateMpris) {
-      ipcRenderer.send('metadata', metadata);
-    }
   }
   _updateMediaSessionPositionState() {
     if ('mediaSession' in navigator === false) {
@@ -560,16 +555,14 @@ export default class {
     }
     let copyTrack = { ...track };
     copyTrack.dt -= seekTime * 1000;
-    ipcRenderer.send('playDiscordPresence', copyTrack);
   }
-  _pauseDiscordPresence(track) {
+  _pauseDiscordPresence() {
     if (
       process.env.IS_ELECTRON !== true ||
       store.state.settings.enableDiscordRichPresence === false
     ) {
       return null;
     }
-    ipcRenderer.send('pauseDiscordPresence', track);
   }
 
   currentTrackID() {
@@ -797,12 +790,8 @@ export default class {
 
   sendSelfToIpcMain() {
     if (process.env.IS_ELECTRON !== true) return false;
-    let liked = store.state.liked.songs.includes(this.currentTrack.id);
-    ipcRenderer.send('player', {
-      playing: this.playing,
-      likedCurrentTrack: liked,
-    });
-    setTrayLikeState(liked);
+    // let liked = store.state.liked.songs.includes(this.currentTrack.id);
+    // setTrayLikeState(liked);
   }
 
   switchRepeatMode() {
@@ -813,15 +802,9 @@ export default class {
     } else {
       this.repeatMode = 'on';
     }
-    if (isCreateMpris) {
-      ipcRenderer.send('switchRepeatMode', this.repeatMode);
-    }
   }
   switchShuffle() {
     this.shuffle = !this.shuffle;
-    if (isCreateMpris) {
-      ipcRenderer.send('switchShuffle', this.shuffle);
-    }
   }
   switchReversed() {
     this.reversed = !this.reversed;

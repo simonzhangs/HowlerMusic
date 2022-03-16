@@ -21,7 +21,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 module.exports = {
   // 生产环境打包不输出 map
-  // productionSourceMap: false,
+  productionSourceMap: false,
   devServer: {
     disableHostCheck: true,
     port: process.env.DEV_SERVER_PORT || 8080,
@@ -92,8 +92,8 @@ module.exports = {
         minRatio: 0.8,
         deleteOriginalAssets: true // 删除源文件
       }))
-      config.plugin('chunckPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
-        maxChunks: 4,
+      config.plugin('chunkPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
+        maxChunks: 5,
         minChunkSize: 100
       }])
     }
