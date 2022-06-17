@@ -54,9 +54,6 @@ export default {
   updateDailyTracks(state, dailyTracks) {
     state.dailyTracks = dailyTracks;
   },
-  updateLastfm(state, session) {
-    state.lastfm = session;
-  },
   updateShortcut(state, { id, type, shortcut }) {
     let newShortcut = state.settings.shortcuts.finds(s => s.id === id);
     newShortcut[type] = shortcut;
