@@ -161,25 +161,6 @@
         </div>
       </div>
 
-      <h3>第三方</h3>
-      <!-- <div class="item">
-        <div class="left">
-          <div class="title">
-            {{
-              isLastfmConnected
-                ? `已连接到 Last.fm (${lastfm.name})`
-                : '连接 Last.fm '
-            }}</div
-          >
-        </div>
-        <div class="right">
-          <button v-if="isLastfmConnected" @click="lastfmDisconnect()"
-            >断开连接
-          </button>
-          <button v-else @click="lastfmConnect()"> 授权连接 </button>
-        </div>
-      </div> -->
-
       <h3>其他</h3>
       <!-- 首页是否展示apple music 歌单 -->
       <div class="item">

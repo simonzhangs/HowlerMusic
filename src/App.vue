@@ -75,7 +75,7 @@ export default {
     },
     // 判断是否展示导航栏
     showNavbar() {
-      return this.$route.name !== "lastfmCallback";
+      return true;
     },
   },
   created() {

@@ -1,6 +1,5 @@
 import { getAlbum } from "@/api/album";
 import { getArtist } from "@/api/artist";
-import { trackUpdateNowPlaying, trackScrobble } from "@/api/lastfm";
 import { personalFM, fmTrash } from "@/api/others";
 import { getPlaylistDetail, intelligencePlaylist } from "@/api/playlist";
 import { getTrackDetail, scrobble, getMP3 } from "@/api/track";
@@ -294,20 +293,6 @@ export default class {
       sourceid: this.playlistSource.id,
       time,
     });
-    if (
-      store.state.lastfm.key !== undefined &&
-      (time >= trackDuration / 2 || time >= 240)
-    ) {
-      const timestamp = ~~(new Date().getTime() / 1000) - time;
-      trackScrobble({
-        artist: track.ar[0].name,
-        track: track.name,
-        timestamp,
-        album: track.al.name,
-        trackNumber: track.no,
-        duration: trackDuration,
-      });
-    }
   }
   _playAudioSource(source, autoplay = true) {
     Howler.unload();
@@ -659,15 +644,6 @@ export default class {
       setTitle(this._currentTrack);
     }
     this._playDiscordPresence(this._currentTrack, this.seek());
-    if (store.state.lastfm.key !== undefined) {
-      trackUpdateNowPlaying({
-        artist: this.currentTrack.ar[0].name,
-        track: this.currentTrack.name,
-        album: this.currentTrack.al.name,
-        trackNumber: this.currentTrack.no,
-        duration: ~~(this.currentTrack.dt / 1000),
-      });
-    }
   }
   playOrPause() {
     if (this._howler?.playing()) {

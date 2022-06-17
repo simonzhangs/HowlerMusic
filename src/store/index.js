@@ -9,9 +9,7 @@ import { changeAppearance } from '@/utils/common';
 import Player from '@/utils/Player';
 
 import saveToLocalStorage from './plugins/localStorage';
-// import { getSendSettingsPlugin } from './plugins/sendSettings';
 
-// import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex);
 
 let plugins = [saveToLocalStorage];
