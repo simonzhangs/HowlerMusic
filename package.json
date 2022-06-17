@@ -1,5 +1,5 @@
 {
-  "name": "HowlerMusic",
+  "name": "howlermusic",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -49,7 +49,10 @@
     "husky": "^4.3.0",
     "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-server-renderer": "^2.6.14",
+    "vue-skeleton-webpack-plugin": "^1.2.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": "^3.9.0"
   },
   "eslintConfig": {
     "root": true,

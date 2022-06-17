@@ -1,5 +1,4 @@
 <template>
-<!-- 暂未理解 -->
   <transition name="slide-up">
     <div
       class="lyrics-page"

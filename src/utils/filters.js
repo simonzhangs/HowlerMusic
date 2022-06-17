@@ -3,9 +3,14 @@ import Vue from "vue";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
+import 'dayjs/locale/es';
 
 import locale from "@/locale";
 
+// 全局过滤器，用于 双花括号插值和 v-bind 表达式 (后者从 2.1.0+ 开始支持）
+// https://cn.vuejs.org/v2/guide/filters.html
+
+// 时间格式
 Vue.filter("formatTime", (Milliseconds, format = "HH:MM:SS") => {
   if (!Milliseconds) return "";
   dayjs.extend(duration);
@@ -42,6 +47,7 @@ Vue.filter("formatTime", (Milliseconds, format = "HH:MM:SS") => {
   }
 });
 
+// 日期格式
 Vue.filter("formatDate", (timestamp, format = "MMM D, YYYY") => {
   if (!timestamp) return "";
   if (locale.locale === "zh-CN") format = "YYYY年MM月DD日";
@@ -49,6 +55,7 @@ Vue.filter("formatDate", (timestamp, format = "MMM D, YYYY") => {
   return dayjs(timestamp).format(format);
 });
 
+// 单曲格式
 Vue.filter("formatAlbumType", (type, album) => {
   if (!type) return "";
   if (type === "EP/Single") {
@@ -62,6 +69,7 @@ Vue.filter("formatAlbumType", (type, album) => {
   }
 });
 
+// 图片尺寸
 Vue.filter("resizeImage", (imgUrl, size = 512) => {
   if (!imgUrl) return "";
   let httpsImgUrl = imgUrl;
@@ -71,6 +79,7 @@ Vue.filter("resizeImage", (imgUrl, size = 512) => {
   return `${httpsImgUrl}?param=${size}y${size}`;
 });
 
+// 播放量
 Vue.filter("formatPlayCount", (count) => {
   if (!count) return "";
   if (locale.locale === "zh-CN") {
@@ -109,6 +118,7 @@ Vue.filter("formatPlayCount", (count) => {
   }
 });
 
+// 协议替换为https
 Vue.filter("toHttps", (url) => {
   if (!url) return "";
   return url.replace(/^http:/, "https:");

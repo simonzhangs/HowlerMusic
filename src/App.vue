@@ -66,13 +66,12 @@ export default {
           "loginUsername",
           "login",
           "loginAccount",
-          "lastfmCallback",
         ].includes(this.$route.name) === false
       );
     },
     // 判断是否存在播放器
     enablePlayer() {
-      return this.player.enabled && this.$route.name !== "lastfmCallback";
+      return this.player.enabled;
     },
     // 判断是否展示导航栏
     showNavbar() {
@@ -81,12 +80,12 @@ export default {
   },
   created() {
     window.addEventListener('keydown', this.handleKeydown);
-    this.fetchData();
+    this.fetchData(); 
   },
   methods: {
     // 网页空格控制播放暂停
     handleKeydown(e) {
-      if (e.code === 'Space') {
+      if (e.code === 'Space') { 
         if (e.target.tagName === 'INPUT') return false;
         // if (this.$route.name === 'mv') return false;
         e.preventDefault();

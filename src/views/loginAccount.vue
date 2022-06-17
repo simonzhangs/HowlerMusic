@@ -106,7 +106,7 @@
       <div
         class="notice"
         v-show="mode !== 'qrCode'"
-        v-html="isElectron ? $t('login.noticeElectron') : $t('login.notice')"
+        v-html="$t('login.notice')"
       >
       </div>
     </div>
@@ -144,11 +144,6 @@ export default {
       qrCodeCheckInterval: null,
       qrCodeInformation: '打开网易云音乐APP扫码登录',
     };
-  },
-  computed: {
-    isElectron() {
-      return process.env.IS_ELECTRON;
-    },
   },
   created() {
     if (['phone', 'email', 'qrCode'].includes(this.$route.query.mode)) {
@@ -222,11 +217,9 @@ export default {
       }
       if (data.code === 200) {
         setCookies(data.cookie);
-        this.$store.commit('updateData', { key: 'loginMode', value: 'account'});
-        // this.updateData({ key: 'loginMode', value: 'account'});
+        this.updateData({key: 'loginMode', value: 'account'});
         this.$store.dispatch('fetchUserProfile').then(() => {
           this.$store.dispatch('fetchLikedPlaylist').then(() => {
-            this.$store.dispatch('fetchLikedSongsWithDetails');
             this.$router.push({ path: '/library' });
           });
         });

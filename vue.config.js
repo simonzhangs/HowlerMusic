@@ -5,19 +5,7 @@ function resolve(dir) {
 
 const webpack = require('webpack')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-// const productionGzipExtensions = ['js', 'css']
-// const isProduction = process.env.NODE_ENV === 'production'
-
-// const cdn = {
-//   js: [
-//     "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
-//     "https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js",
-//     "https://cdn.jsdelivr.net/npm/vue-router@3.4.3/dist/vue-router.min.js",
-//     "https://cdn.jsdelivr.net/npm/axios@0.21.0/dist/axios.min.js",
-//     "https://cdn.jsdelivr.net/npm/vue-i18n@9.1.9/dist/vue-i18n.global.prod.js",
-//     "https://cdn.jsdelivr.net/npm/vue-clipboard2@0.3.1/dist/vue-clipboard.min.js",
-//   ]
-// };
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 
 module.exports = {
   // 生产环境打包不输出 map
@@ -44,22 +32,7 @@ module.exports = {
     manifestOptions: {
       background_color: '#335eea',
     },
-    // workboxOptions: {
-    //   swSrc: "dev/sw.js",
-    // },
   },
-  // 打包忽略文件
-  // configureWebpack: {
-  //   externals: {
-  //     vue: 'Vue',
-  //     vuex: 'Vuex',
-  //     "vue-router": 'VueRouter',
-  //     axios: "axios",
-  //     "vue-i18n": 'VueI18n',
-  //     "vue-clipboard2": 'VueClipboard'
-  //   },
-  // },
-  // 入口配置
   pages: {
     index: {
       entry: 'src/main.js',
@@ -98,26 +71,28 @@ module.exports = {
       }])
     }
 
+    // 打包体积分析
+    config.plugin('webpack-bundle-analyzer')
+          .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
   },
-  // configureWebpack: {
-  //   resolve: {
-  //     alias: {
 
-  //     }
-  //   },
-  //   plugins: [
-  //     new CompressionWebpackPlugin({
-  //       algorithm: 'gzip',
-  //       test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-  //       threshold: 10240, // 对超过10k的数据压缩
-  //       minRatio: 0.8,
-  //       deleteOriginalAssets: true //删除源文件
-  //     }),
-  //     new webpack.optimize.LimitChunkCountPlugin({
-  //       maxChunks: 5,
-  //       minChunkSize: 100
-  //     })
-  //   ]
-
-  // }
+  configureWebpack: (config) => {
+    // vue骨架屏插件配置
+    config.plugins.push(new SkeletonWebpackPlugin({
+        webpackConfig: {
+            entry: {
+                app: path.join(__dirname, './src/components/skeleton/skeleton-entry.js'),
+            },
+        },
+        minimize: true,
+        quiet: true,
+        router:{
+            mode:'hash',
+            routes:[
+                { path: '/', skeletonId: 'skeleton' }
+                // { path: 'aboute', skeletonId: 'skeleton1' },如果需要配置多个，直接在routes下新增路由对象即可
+            ]
+        }
+    }))
+},
 };

@@ -1,17 +1,8 @@
 import axios from 'axios';
 import { getCookie } from '@/utils/auth';
+import config from "@/config/index.js";
 
-let baseURL = '';
-// Web 和 Electron 跑在不同端口避免同时启动时冲突
-if (process.env.IS_ELECTRON) {
-    if (process.env.MODE_ENV === 'production') {
-        baseURL = process.env.VUE_APP_ELCTRON_API_URL;
-    } else {
-        baseURL = process.env.VUE_APP_ELCTRON_API_URL_DEV;
-    }
-} else {
-    baseURL = process.env.VUE_APP_NETEASE_API_URL;
-}
+let baseURL = config.VUE_APP_NETEASE_API_URL
 
 const service = axios.create({
     baseURL,
@@ -21,12 +12,12 @@ const service = axios.create({
 
 service.interceptors.request.use(function (config) {
     if(!config.params) config.params = {};
-    if (baseURL[0] !== '/' && !process.env.IS_ELECTRON) {
+    if (baseURL !== '/') {
         config.params.cookie = `MUSIC_U=${getCookie('MUSIC_U')};`;
     }
 
-    if (!process.env.IS_ELECTRON && !config.url.includes('/login')) {
-        config.params.realIP = '211.161.244.70';
+    if (!config.url.includes('/login')) {
+        // config.params.realIP = '211.161.244.70';
     }
 
     const proxy = JSON.parse(localStorage.getItem('settings')).proxyConfig;

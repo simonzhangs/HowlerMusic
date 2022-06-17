@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import { register } from 'register-service-worker';
 
 if (!process.env.IS_ELECTRON) {
@@ -11,7 +10,7 @@ if (!process.env.IS_ELECTRON) {
       );
     },
     registered() {
-      console.log("Service worker has been registered.");
+      console.log("Service worker has been registered!!!");
     },
     cached() {
       console.log("Content has been cached for offline use.");

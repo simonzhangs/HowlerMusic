@@ -70,6 +70,7 @@ export function changeAppearance(appearance) {
   .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
 }
 
+// 网易云每日签到
 export function dailyTask() {
   let lastDate = store.state.data.lastRefreshCookieDate;
   if (

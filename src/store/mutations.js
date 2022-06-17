@@ -5,9 +5,6 @@ export default {
   // liked
   updateLikedXXX(state, { name, data }) {
     state.liked[name] = data;
-    if (name === 'songs') {
-      state.player.sendSelfToIpcMain();
-    }
   },
   // settings
   changeLang(state, lang) {

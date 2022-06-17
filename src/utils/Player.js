@@ -11,7 +11,7 @@ import shuffle from "lodash/shuffle";
 import { Howler, Howl } from "howler";
 import store from "@/store";
 
-// player 构造器
+// player 构造器 
 
 const delay = (ms) =>
   new Promise((resolve) => {
@@ -641,8 +641,8 @@ export default class {
     for (let [key, value] of Object.entries(this)) {
       if (excludeSaveKeys.includes(key)) continue;
       player[key] = value;
-    }
-
+    }                                                                                       
+                                                        
     localStorage.setItem('player', JSON.stringify(player));
   }
   pause() {
@@ -786,12 +786,6 @@ export default class {
     if (await this.playNextFMTrack()) {
       fmTrash(id);
     }
-  }
-
-  sendSelfToIpcMain() {
-    if (process.env.IS_ELECTRON !== true) return false;
-    // let liked = store.state.liked.songs.includes(this.currentTrack.id);
-    // setTrayLikeState(liked);
   }
 
   switchRepeatMode() {

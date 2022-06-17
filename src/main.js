@@ -17,7 +17,7 @@ import '@/utils/filters';
 
 window.resetApp = () => {
   localStorage.clear();
-  indexedDB.deleteDatabase('yesplaymusic');
+  indexedDB.deleteDatabase('HowlerMusic');
   document.cookie.split(';').forEach(function (c) {
     document.cookie = c
       .replace(/^ +/,'')
@@ -31,10 +31,13 @@ console.log(
   'background:unset;color:unset;'
 );
 
-
+// 在控制台输出关掉开发部署提示
 Vue.config.productionTip = false;
 
+// https://www.npmjs.com/package/nprogress
+// 配置全局进度条,showSpinner：是否展示进度条，进度条前进速度
 NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
+// 网易云音乐每日签到
 dailyTask();
 
 new Vue({

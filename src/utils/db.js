@@ -2,7 +2,7 @@ import axios from 'axios';
 import Dexie from 'dexie';
 import store from '@/store';
 
-const db = new Dexie('yesplaymusic');
+const db = new Dexie('HowlerMusic');
 
 db.version(4).stores({
   trackDetail: '&id, updateTime',
