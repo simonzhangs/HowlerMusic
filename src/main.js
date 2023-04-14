@@ -11,7 +11,6 @@ import '@/assets/css/global.scss';
 import NProgress from 'nprogress';
 import '@/assets/css/nprogress.css';
 
-import './registerServiceWorker';
 import { dailyTask } from '@/utils/common';
 import '@/utils/filters';
 
