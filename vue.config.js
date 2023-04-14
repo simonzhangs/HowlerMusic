@@ -5,7 +5,6 @@ function resolve(dir) {
 
 const webpack = require('webpack')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 
 module.exports = {
   // 生产环境打包不输出 map
@@ -75,24 +74,4 @@ module.exports = {
     config.plugin('webpack-bundle-analyzer')
           .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
   },
-
-  configureWebpack: (config) => {
-    // vue骨架屏插件配置
-    config.plugins.push(new SkeletonWebpackPlugin({
-        webpackConfig: {
-            entry: {
-                app: path.join(__dirname, './src/components/skeleton/skeleton-entry.js'),
-            },
-        },
-        minimize: true,
-        quiet: true,
-        router:{
-            mode:'hash',
-            routes:[
-                { path: '/', skeletonId: 'skeleton' }
-                // { path: 'aboute', skeletonId: 'skeleton1' },如果需要配置多个，直接在routes下新增路由对象即可
-            ]
-        }
-    }))
-},
 };
