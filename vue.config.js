@@ -3,8 +3,8 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-const webpack = require('webpack')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const webpack = require('webpack')
+// const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 module.exports = {
   // 生产环境打包不输出 map
@@ -57,18 +57,18 @@ module.exports = {
       .end();
 
       // 生产环境，开启js\css压缩
-    if (process.env.NODE_ENV === 'production') {
-      config.plugin('compression-webpack-plugin').use(new CompressionWebpackPlugin({
-        test: /\.(js|css|less)$/, // 匹配文件名
-        threshold: 10240, // 对超过10k的数据压缩
-        minRatio: 0.8,
-        deleteOriginalAssets: true // 删除源文件
-      }))
-      config.plugin('chunkPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
-        maxChunks: 5,
-        minChunkSize: 100
-      }])
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    //   config.plugin('compression-webpack-plugin').use(new CompressionWebpackPlugin({
+    //     test: /\.(js|css|less)$/, // 匹配文件名
+    //     threshold: 10240, // 对超过10k的数据压缩
+    //     minRatio: 0.8,
+    //     deleteOriginalAssets: true // 删除源文件
+    //   }))
+    //   config.plugin('chunkPlugin').use(webpack.optimize.LimitChunkCountPlugin,[{
+    //     maxChunks: 5,
+    //     minChunkSize: 100
+    //   }])
+    // }
 
     // 打包体积分析
     // config.plugin('webpack-bundle-analyzer')
